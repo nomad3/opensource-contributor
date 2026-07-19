@@ -28,6 +28,12 @@ ready:
       artifact: triage current help-wanted metrics or operational-documentation issues
     - project: open-telemetry/opentelemetry-python-contrib
       artifact: map GenAI instrumentation tests to current semantic conventions
+    - project: tektoncd/pipeline
+      issue: 4426
+      artifact: apply saved debug-script e2e patch and run on a disposable cluster
+    - project: prometheus-operator/prometheus-operator
+      issue: 8669
+      artifact: A/B reproduce PVC persistence with and without disableMountSubPath
   medium:
     - project: opencost/opencost
       artifact: select and reproduce an unassigned cost-accuracy or metrics issue
@@ -75,8 +81,30 @@ waiting:
     reason: active overlapping PR 52714 implements the proposed bounded scope
     last_checked: 2026-07-19
     next_check: observe PR review and avoid duplicate CI changes
+  - project: prometheus-operator/prometheus-operator
+    issue: 8681
+    reason: active overlapping PR 8682
+    last_checked: 2026-07-19
+    next_check: observe upstream resolution; do not duplicate dual-stack work
+  - project: prometheus-operator/prometheus-operator
+    issue: 4940
+    reason: active overlapping PR 8645
+    last_checked: 2026-07-19
+    next_check: observe upstream resolution; do not duplicate TLS validation work
+  - project: prometheus-operator/prometheus-operator
+    issue: 4467
+    reason: active overlapping PR 7863
+    last_checked: 2026-07-19
+    next_check: observe upstream resolution; do not duplicate secret reconciliation work
 
 completed:
+  - project: prometheus-operator/prometheus-operator
+    pull_request: 8695
+    artifact: validated Alertmanager 0.33.0 event-recorder version-gate suggestion
+    patch: .contrib/patches/prometheus-operator-8695-version-gate.patch
+    handoff: .contrib/handoffs/prometheus-operator-8695-version-gate.md
+    completed: 2026-07-19
+    externally_posted: false
   - project: prometheus-operator/prometheus-operator
     pull_request: 8695
     artifact: adversarial maintainer review with one version-compatibility blocker

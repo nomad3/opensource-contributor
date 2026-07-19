@@ -1,0 +1,186 @@
+From 895bd19caad2f1fa7700c13d3b99421fb08289eb Mon Sep 17 00:00:00 2001
+From: Simon Aguilera <saguilera1608@gmail.com>
+Date: Sat, 18 Jul 2026 22:23:05 -0400
+Subject: [PATCH] test: cover TaskRun debug scripts end to end
+
+Signed-off-by: Simon Aguilera <saguilera1608@gmail.com>
+---
+ test/debug_scripts_test.go | 166 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 166 insertions(+)
+ create mode 100644 test/debug_scripts_test.go
+
+diff --git a/test/debug_scripts_test.go b/test/debug_scripts_test.go
+new file mode 100644
+index 000000000..c878d19d0
+--- /dev/null
++++ b/test/debug_scripts_test.go
+@@ -0,0 +1,166 @@
++//go:build e2e
++
++/*
++Copyright 2026 The Tekton Authors
++
++Licensed under the Apache License, Version 2.0 (the "License");
++you may not use this file except in compliance with the License.
++You may obtain a copy of the License at
++
++    http://www.apache.org/licenses/LICENSE-2.0
++
++Unless required by applicable law or agreed to in writing, software
++distributed under the License is distributed on an "AS IS" BASIS,
++WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++See the License for the specific language governing permissions and
++limitations under the License.
++*/
++
++package test
++
++import (
++	"bytes"
++	"context"
++	"fmt"
++	"os/exec"
++	"testing"
++
++	"github.com/tektoncd/pipeline/test/parse"
++	corev1 "k8s.io/api/core/v1"
++	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
++	knativetest "knative.dev/pkg/test"
++	"knative.dev/pkg/test/helpers"
++)
++
++// @test:execution=parallel
++func TestTaskRunDebugScripts(t *testing.T) {
++	tests := []struct {
++		name          string
++		debug         string
++		stepCommand   string
++		script        string
++		shouldSucceed bool
++	}{
++		{
++			name:          "continue after failure",
++			debug:         "onFailure: enabled",
++			stepCommand:   "exit 1",
++			script:        "debug-continue",
++			shouldSucceed: true,
++		},
++		{
++			name:          "fail after failure",
++			debug:         "onFailure: enabled",
++			stepCommand:   "exit 1",
++			script:        "debug-fail-continue",
++			shouldSucceed: false,
++		},
++		{
++			name:          "continue before step",
++			debug:         "beforeSteps: [debug-step]",
++			stepCommand:   "echo completed",
++			script:        "debug-beforestep-continue",
++			shouldSucceed: true,
++		},
++		{
++			name:          "fail before step",
++			debug:         "beforeSteps: [debug-step]",
++			stepCommand:   "echo should-not-run",
++			script:        "debug-beforestep-fail-continue",
++			shouldSucceed: false,
++		},
++	}
++
++	for _, test := range tests {
++		t.Run(test.name, func(t *testing.T) {
++			ctx := t.Context()
++			ctx, cancel := context.WithCancel(ctx)
++			defer cancel()
++
++			c, namespace := setup(ctx, t, requireAnyGate(map[string]string{"enable-api-fields": "alpha"}))
++			t.Parallel()
++
++			knativetest.CleanupOnInterrupt(func() { tearDown(ctx, t, c, namespace) }, t.Logf)
++			defer tearDown(ctx, t, c, namespace)
++
++			taskRunName := helpers.ObjectNameForTest(t)
++			taskRun := parse.MustParseV1TaskRun(t, fmt.Sprintf(`
++metadata:
++  name: %s
++  namespace: %s
++spec:
++  debug:
++    breakpoints:
++      %s
++  taskSpec:
++    steps:
++    - name: debug-step
++      image: mirror.gcr.io/busybox
++      command: ["/bin/sh", "-c"]
++      args: [%q]
++`, taskRunName, namespace, test.debug, test.stepCommand))
++			if _, err := c.V1TaskRunClient.Create(ctx, taskRun, metav1.CreateOptions{}); err != nil {
++				t.Fatalf("Failed to create TaskRun: %s", err)
++			}
++
++			if err := WaitForTaskRunState(ctx, c, taskRunName, Running(taskRunName), "TaskRunRunning", v1Version); err != nil {
++				t.Fatalf("Error waiting for TaskRun to reach its breakpoint: %s", err)
++			}
++
++			taskRun, err := c.V1TaskRunClient.Get(ctx, taskRunName, metav1.GetOptions{})
++			if err != nil {
++				t.Fatalf("Failed to get TaskRun: %s", err)
++			}
++			if taskRun.Status.PodName == "" {
++				t.Fatal("TaskRun has no Pod name")
++			}
++
++			if err := WaitForPodState(ctx, c, taskRun.Status.PodName, namespace, containerRunning("step-debug-step"), "StepContainerRunning"); err != nil {
++				t.Fatalf("Error waiting for step container: %s", err)
++			}
++
++			stdout, stderr, err := execInPod(
++				ctx,
++				namespace,
++				taskRun.Status.PodName,
++				"step-debug-step",
++				"/tekton/debug/scripts/"+test.script,
++			)
++			if err != nil {
++				t.Fatalf("Failed to run %s: %s\nstdout: %s\nstderr: %s", test.script, err, stdout, stderr)
++			}
++
++			state := TaskRunFailed(taskRunName)
++			description := "TaskRunFailed"
++			if test.shouldSucceed {
++				state = TaskRunSucceed(taskRunName)
++				description = "TaskRunSucceeded"
++			}
++			if err := WaitForTaskRunState(ctx, c, taskRunName, state, description, v1Version); err != nil {
++				t.Fatalf("TaskRun did not reach the expected state after %s: %s", test.script, err)
++			}
++		})
++	}
++}
++
++func containerRunning(name string) func(*corev1.Pod) (bool, error) {
++	return func(pod *corev1.Pod) (bool, error) {
++		for _, status := range pod.Status.ContainerStatuses {
++			if status.Name == name {
++				return status.State.Running != nil, nil
++			}
++		}
++		return false, nil
++	}
++}
++
++func execInPod(ctx context.Context, namespace, pod, container string, command ...string) (string, string, error) {
++	args := []string{"exec", "-n", namespace, pod, "-c", container, "--"}
++	args = append(args, command...)
++	cmd := exec.CommandContext(ctx, "kubectl", args...)
++	var stdout, stderr bytes.Buffer
++	cmd.Stdout = &stdout
++	cmd.Stderr = &stderr
++	err := cmd.Run()
++	return stdout.String(), stderr.String(), err
++}
+-- 
+2.50.1
+

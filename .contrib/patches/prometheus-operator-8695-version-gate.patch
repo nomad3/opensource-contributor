@@ -1,0 +1,93 @@
+From 351e53a4094fc5c887423435f1973073a0ca347d Mon Sep 17 00:00:00 2001
+From: Simon Aguilera <saguilera1608@gmail.com>
+Date: Sat, 18 Jul 2026 22:29:02 -0400
+Subject: [PATCH] fix(alertmanager): gate event recorder by version
+
+Signed-off-by: Simon Aguilera <saguilera1608@gmail.com>
+---
+ pkg/alertmanager/amcfg.go                     |  6 +++++
+ pkg/alertmanager/amcfg_test.go                | 23 +++++++++++++++++++
+ ...der_is_added_for_supported_versions.golden |  4 ++++
+ ...is_dropped_for_unsupported_versions.golden |  1 +
+ 4 files changed, 34 insertions(+)
+ create mode 100644 pkg/alertmanager/testdata/test_event_recorder_is_added_for_supported_versions.golden
+ create mode 100644 pkg/alertmanager/testdata/test_event_recorder_is_dropped_for_unsupported_versions.golden
+
+diff --git a/pkg/alertmanager/amcfg.go b/pkg/alertmanager/amcfg.go
+index 1be616a6..4a397db0 100644
+--- a/pkg/alertmanager/amcfg.go
++++ b/pkg/alertmanager/amcfg.go
+@@ -2182,6 +2182,12 @@ func (c *alertmanagerConfig) sanitize(amVersion semver.Version, logger *slog.Log
+ 		c.TimeIntervals = nil
+ 	}
+ 
++	if c.EventRecorder != nil && amVersion.LT(semver.MustParse("0.33.0")) {
++		msg := "'event_recorder' supported in Alertmanager >= 0.33.0 only - dropping field from provided config"
++		logger.Warn(msg, "current_version", amVersion.String())
++		c.EventRecorder = nil
++	}
++
+ 	for _, ti := range c.MuteTimeIntervals {
+ 		if err := ti.sanitize(amVersion, logger); err != nil {
+ 			return fmt.Errorf("mute_time_intervals[%s]: %w", ti.Name, err)
+diff --git a/pkg/alertmanager/amcfg_test.go b/pkg/alertmanager/amcfg_test.go
+index 72488d50..ca466cb3 100644
+--- a/pkg/alertmanager/amcfg_test.go
++++ b/pkg/alertmanager/amcfg_test.go
+@@ -4850,6 +4850,9 @@ func TestSanitizeConfig(t *testing.T) {
+ 	versionGlobalMattermostWebhookURLAllowed := semver.Version{Major: 0, Minor: 32}
+ 	versionGlobalMattermostWebhookURLNotAllowed := semver.Version{Major: 0, Minor: 31}
+ 
++	versionEventRecorderAllowed := semver.Version{Major: 0, Minor: 33}
++	versionEventRecorderNotAllowed := semver.Version{Major: 0, Minor: 32}
++
+ 	for _, tc := range []struct {
+ 		name           string
+ 		againstVersion semver.Version
+@@ -4883,6 +4886,26 @@ func TestSanitizeConfig(t *testing.T) {
+ 			},
+ 			golden: "test_smtp_tls_config_is_added_for_supported_versions.golden",
+ 		},
++		{
++			name:           "Test event_recorder is added for supported versions",
++			againstVersion: versionEventRecorderAllowed,
++			in: &alertmanagerConfig{
++				EventRecorder: &eventRecorderConfig{
++					FileOutputs: []*fileOutputConfig{{Path: "/tmp/events.jsonl"}},
++				},
++			},
++			golden: "test_event_recorder_is_added_for_supported_versions.golden",
++		},
++		{
++			name:           "Test event_recorder is dropped for unsupported versions",
++			againstVersion: versionEventRecorderNotAllowed,
++			in: &alertmanagerConfig{
++				EventRecorder: &eventRecorderConfig{
++					FileOutputs: []*fileOutputConfig{{Path: "/tmp/events.jsonl"}},
++				},
++			},
++			golden: "test_event_recorder_is_dropped_for_unsupported_versions.golden",
++		},
+ 		{
+ 			name:           "Test smtp_auth_secret_file is added for supported versions",
+ 			againstVersion: versionGlobalSMTPAuthSecretFileAllowed,
+diff --git a/pkg/alertmanager/testdata/test_event_recorder_is_added_for_supported_versions.golden b/pkg/alertmanager/testdata/test_event_recorder_is_added_for_supported_versions.golden
+new file mode 100644
+index 00000000..6b843ffc
+--- /dev/null
++++ b/pkg/alertmanager/testdata/test_event_recorder_is_added_for_supported_versions.golden
+@@ -0,0 +1,4 @@
++event_recorder:
++  file_outputs:
++  - path: /tmp/events.jsonl
++templates: []
+diff --git a/pkg/alertmanager/testdata/test_event_recorder_is_dropped_for_unsupported_versions.golden b/pkg/alertmanager/testdata/test_event_recorder_is_dropped_for_unsupported_versions.golden
+new file mode 100644
+index 00000000..de172a69
+--- /dev/null
++++ b/pkg/alertmanager/testdata/test_event_recorder_is_dropped_for_unsupported_versions.golden
+@@ -0,0 +1 @@
++templates: []
+-- 
+2.50.1
+
