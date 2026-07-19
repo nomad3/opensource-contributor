@@ -1,0 +1,57 @@
+schema_version: 1
+updated: 2026-07-19
+
+profile:
+  focus:
+    - production AI platforms
+    - Kubernetes reliability and capacity
+    - observability and incident response
+    - CI/CD and supply-chain security
+    - MLOps and Python
+    - FinOps and cloud governance
+  rule: one active implementation at a time
+
+active:
+  project: moby/buildkit
+  issue: 4001
+  url: https://github.com/moby/buildkit/issues/4001
+  stage: reconnaissance
+  next_action: verify OTLP implementation, supported environment variables, documentation gaps, and overlapping work
+  estimated_capacity: medium
+  blocked: false
+  externally_posted: false
+
+ready:
+  low:
+    - project: scikit-learn/scikit-learn
+      issue: 28793
+      artifact: reproduction matrix across dtypes and writable/read-only arrays
+    - project: kubernetes-sigs/kueue
+      artifact: triage current help-wanted metrics or operational-documentation issues
+    - project: open-telemetry/opentelemetry-python-contrib
+      artifact: map GenAI instrumentation tests to current semantic conventions
+  medium:
+    - project: moby/buildkit
+      issue: 4001
+      artifact: verified OTLP Collector example and bounded documentation patch
+    - project: opencost/opencost
+      artifact: select and reproduce an unassigned cost-accuracy or metrics issue
+    - project: kubeflow/pipelines
+      artifact: select a bounded Python SDK or pipeline reliability test
+  high:
+    - project: moby/moby
+      issue: 50732
+      artifact: gotestsum controlled CI experiment and evidence report
+    - project: kubernetes-sigs/kueue
+      artifact: controller architecture and scale-test mapping
+    - project: prometheus-operator/prometheus-operator
+      artifact: upgrade or reconciliation failure-path analysis
+
+waiting:
+  - project: kserve/kserve
+    issue: 5412
+    reason: three open overlapping pull requests (5450, 5693, 5697)
+    last_checked: 2026-07-19
+    next_check: observe upstream resolution; do not implement
+
+completed: []
