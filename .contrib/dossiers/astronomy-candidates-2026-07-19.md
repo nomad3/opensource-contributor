@@ -13,13 +13,15 @@ Compiled from public checks completed on 2026-07-19; Bilby was revalidated at
 `2026-07-19T05:15:10Z`, Dask #12507 at `2026-07-19T04:32:12Z`, and
 Lightkurve #1565 at `2026-07-19T05:27:48Z`.
 GWPy #1850 received a source, history, policy, and ownership audit at
-`2026-07-19T05:59:41Z`.
+`2026-07-19T05:59:41Z`; Astropy #18910 received the same bounded audit at
+`2026-07-19T06:40:44Z`.
 
 This is a non-authoritative lead inventory, not an operational queue. Only the
 Observer Manager may promote or dispatch an item. Bilby #1114, Lightkurve
 #1531 and #1565, yt #5439, Dask #12507, Gammapy #6716, GWPy #1850, and SunPy
-#8599 have received deeper audits. The remaining entries are issue-level leads
-that still require a fresh evidence bundle with exact timestamps,
+#8599 have received deeper audits. Astropy #18910 now also has a full
+source-only dossier. The remaining entries are issue-level leads that still
+require a fresh evidence bundle with exact timestamps,
 assignment/overlap searches, resource requirements, and recheck conditions
 before promotion.
 
@@ -32,7 +34,7 @@ before promotion.
 | 3 | Dask and xarray | Scientific-pipeline determinism and scalability | The hash-seed optimizer defect is locally reproduced and affects graph construction for survey, remote-sensing, and other chunked-array workloads. |
 | 4 | yt | Scalable simulation analysis | Excellent match for data correctness, Dask, memory, performance, and very large datasets. |
 | 5 | Gammapy | Dataset compatibility and CI | Scientific results depend on stable serialization, numerical correctness, and dependency compatibility. |
-| 6 | Astropy ecosystem | Core data formats, archive access, and coordinates | Foundational impact and strong review standards, though many recent issues are already actively covered. |
+| 6 | Astropy ecosystem | Core data formats, archive access, and coordinates | Foundational impact and strong review standards; the singleton table-stack ownership defect now has a bounded contract dossier. |
 | 7 | Survey-scale infrastructure | LSDB, HATS, SkyPortal, Fink, and RAIL | Strategic data/ML infrastructure fit; issue selection requires deeper setup and coordination. |
 
 ## Candidate issues
@@ -49,7 +51,7 @@ before promotion.
 | Gammapy | [#6716 — Gammapy 2.0.1 cannot read a dataset written by 2.1](https://github.com/gammapy/gammapy/issues/6716) | Pinned release/maintenance source matrix and markerless-YAML call path; dispatch proxy plus 2.1-producer acceptance control designed; independently reviewed; [full dossier](gammapy-6716.md) | Milestone 2.0.2 supports a maintenance fix. The old reader defaults to OGIP despite already supporting explicit GADF, so 2.1 output fails at missing `EBOUNDS`. Evidence is GO; dispatch waits for mandatory issue discussion, target direction, and the implementation slot. |
 | Gammapy | [#6787 — CI not running correctly on development dependencies](https://github.com/gammapy/gammapy/issues/6787) | Direct overlap found | Draft [PR #6731](https://github.com/gammapy/gammapy/pull/6731) covers the development-dependency CI lane; observe and do not duplicate. |
 | SunPy | [#8599 — GOES-19 CCOR science data does not load as a map](https://github.com/sunpy/sunpy/issues/8599) | Current/stable source and contract history mapped; synthetic multi-HDU regression designed | A second 2-D HDU is invalid for `Map`; `allow_errors=True` loads the valid science HDU and default fail-fast behavior is historically intentional. Treat code as no-go unless maintainers request a narrow file-derived auxiliary-HDU exception. |
-| Astropy | [#11148 — `ascii.write` gives a nondescript error for multidimensional structured columns](https://github.com/astropy/astropy/issues/11148) | Issue-reported reserve; public ownership/overlap checked on scan date | Reproduce on current main and define intended validation or support behavior before promotion. |
+| Astropy | [#18910 — one-table stack returns the caller's table despite documenting a new table](https://github.com/astropy/astropy/issues/18910) | Pinned main/`v8.0.1` source, tests, history, policy, and overlap audited; independently reviewed; [full dossier](astropy-18910.md) | The identity alias and top-level metadata effect are verified. Evidence is GO; dispatch waits for table-maintainer decisions on copy depth, vstack-only versus all operations, singleton `dstack` rank/index behavior, release treatment, and the implementation slot. |
 | yt | [#2281 — faster particle depositions](https://github.com/yt-project/yt/issues/2281) | Issue-reported benchmark lead | Performance-sensitive and broad. Requires fresh ownership/overlap checks, representative datasets, and baseline evidence. |
 | SunPy | [#8416 — support arbitrary APE-14 WCS in `GenericMap.plot`](https://github.com/sunpy/sunpy/issues/8416) | Overlap found | Do not duplicate: active [PR #8684](https://github.com/sunpy/sunpy/pull/8684) implements the requested support. |
 | Astroquery | [#3626 — VizieR errors appear as empty results](https://github.com/astropy/astroquery/issues/3626) | Overlap found | Observe only: active [PR #3632](https://github.com/astropy/astroquery/pull/3632) overlaps the error-semantics work. |
@@ -122,6 +124,23 @@ GWPy #1850:
 5. Reject, shorten, and ASD-alignment semantics remain a maintainer decision.
 6. Independent adversarial review is GO.
 
+Astropy #18910:
+
+1. Current `main` and `v8.0.1` sources confirm that singleton `vstack()`,
+   `hstack()`, and `dstack()` return the exact `Table` or `QTable`.
+2. Existing singleton tests compare values but do not assert identity or
+   mutation isolation; `dstack()` covers only direct ordinary-`Table` input.
+3. PR #3313 establishes intentional vstack/hstack identity history, while PR
+   #16130 protects the caller's outer input list but does not define output
+   ownership.
+4. Private vstack/hstack fast paths and `dstack()`'s separate
+   `(n, *cell_shape)` versus `(n, 1, *cell_shape)` rank and index contract are
+   mapped.
+5. A no-data 3-operation by 2-invocation by 2-table-class regression matrix is
+   designed but was not executed.
+6. Independent source and policy reviews are GO after correcting test,
+   impact-inference, overlap, and backport claims.
+
 Second-round astronomy-native audits:
 
 1. Lightkurve #1565 is source-established and scientifically meaningful, but an
@@ -133,14 +152,18 @@ Second-round astronomy-native audits:
 3. SunPy #8599 is not an alternate-WCS defect: default fail-fast and opt-in
    skipping are established. Only a maintainer-requested file-derived
    auxiliary-HDU exception could justify implementation.
+4. Astropy #18910 is a verified singleton identity mismatch, but code must wait
+   for a table-maintainer decision on copying, operation scope, `dstack` rank,
+   indices, and release treatment.
 
 The Observer may continue read-only monitoring. Upstream contact requires explicit
 user authorization. Bilby implementation additionally requires maintainer-defined
 mixed-input semantics. GWPy requires the reporter's exact inputs and
 maintainer-selected compatibility semantics. Lightkurve implementation requires a
 free Observer slot and a fresh reporter-intent and overlap check. Dask and Gammapy
-require a free slot and fresh maintainer/overlap checks. yt #5439 must remain
-observe-only while PR #5440 is active.
+require a free slot and fresh maintainer/overlap checks. Astropy requires its
+table ownership and rank contract before code. yt #5439 must remain observe-only
+while PR #5440 is active.
 
 ## Non-authoritative research inventory
 
@@ -158,14 +181,23 @@ These categories summarize potential research depth only. They do not confer
 - Gammapy #6775 — reduce dependency-sensitive WCS/SVD failures.
 - Gammapy #6716 — [bounded GADF reader detection](gammapy-6716.md) for the
   2.0.x maintenance line; evidence GO, dispatch WAIT.
+- Astropy #18910 — [source-confirmed singleton table alias](astropy-18910.md);
+  evidence GO, dispatch WAIT on ownership, copy depth, operation, `dstack`
+  rank/index, release-line semantics, and the implementation slot.
 
 ### Deep research
 
 - Dask #12507 — locally reproduced cull-order sensitivity with extreme
   issue-reported production impact.
 - yt #2281 — particle-deposition benchmark and algorithm mapping.
-- katdal #392 — Dask/xarray serialization, pending ownership and design verification.
-- arcae #220 — storage-manager cache sizing, pending benchmark and overlap checks.
+- [katdal #392](https://github.com/ska-sa/katdal/issues/392) — Dask/xarray
+  serialization is important, but the reporter owns overlapping
+  [draft PR #389](https://github.com/ska-sa/katdal/pull/389); observe rather
+  than duplicate.
+- [arcae #220](https://github.com/ratt-ru/arcae/issues/220) — storage-manager
+  cache sizing requires C++/Cython/casacore,
+  representative Measurement Set and Ray evidence, and coordination with
+  active maintainer-led adjacent xarray-ms work.
 
 ### Overlap, policy, or resource risks
 
@@ -183,8 +215,8 @@ These categories summarize potential research depth only. They do not confer
 - SunPy #8599 — member-reporter intent is high, and established fail-fast plus
   `allow_errors=True` semantics make a global default-skip patch no-go without
   explicit maintainer reversal or a narrower file-only contract.
-- Astropy's newest WCS, FITS handle, fitter, unit-column, and table-copy bugs all
-  had active matching pull requests when checked.
+- Astropy #11148's original diagnostic bug is already fixed, and a core
+  maintainer owns the remaining structured-column flatten feature.
 - yt #5457 — important segmentation fault, but the approximately 0.9-GB reproducer
   is not publicly attached.
 - Gammapy #6716 — reader-only detection versus broader backport surface needs
@@ -206,14 +238,16 @@ These categories summarize potential research depth only. They do not confer
 ## Decision
 
 - Completed reconnaissance: Bilby #1114, Lightkurve #1531, Dask #12507,
-  Gammapy #6716, and source-only GWPy #1850; fresh bounded audits also cover
-  Lightkurve #1565 and SunPy #8599
+  Gammapy #6716, source-only GWPy #1850, and source-only Astropy #18910;
+  fresh bounded audits also cover Lightkurve #1565 and SunPy #8599
 - Best data-integrity implementation after slot and ownership recheck:
   Lightkurve #1531
 - Best astronomy-native maintenance candidate after slot and contract recheck:
   Gammapy #6716
 - Best bounded gravitational-wave preprocessing investigation: GWPy #1850;
   implementation waits for exact inputs and maintainers' scientific contract
+- Best bounded core astronomy table/API contract: Astropy #18910;
+  implementation waits for table-maintainer decisions and the free slot
 - Bounded simulation implementation candidate: reselection required; yt #5439
   is already owned by active PR #5440
 - Best evidence-backed cross-science performance lane: Dask #12507

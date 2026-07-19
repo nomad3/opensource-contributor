@@ -71,6 +71,20 @@ observed:
         - maintainers must choose deliberate rejection, explicit shortening, or scientifically defined ASD alignment
         - BuildKit 6966 occupies the sole implementation slot
       next_check: monitor issue 1850; after slot release and authorized contact, revalidate ownership and ask for the missing inputs and desired compatibility semantics before writing the focused regression
+    - project: astropy/astropy
+      issue: 18910
+      result: waiting
+      evidence: pinned current main and v8.0.1 sources show that one-input vstack, hstack, and dstack return the exact Table or QTable despite documenting a new table; existing singleton tests assert values but not identity or mutation isolation
+      artifact: .contrib/dossiers/astropy-18910.md
+      cross_review: GO
+      observer_verdict: evidence-go-dispatch-wait
+      blockers:
+        - table maintainers have not selected documentation versus new-result behavior or copy depth
+        - vstack-only versus all-three-operation scope is undefined
+        - singleton dstack rank and index behavior is undefined
+        - main and maintained-release treatment is undefined
+        - BuildKit 6966 occupies the sole implementation slot
+      next_check: monitor issue 18910; after slot release and authorized contact, revalidate ownership and ask table maintainers to select object, copy-depth, operation, dstack rank/index, and release-line contracts before writing the focused regression
     - project: lightkurve/lightkurve
       issue: 1531
       result: waiting
@@ -151,9 +165,9 @@ capacity:
   routing: observation-only
 
 storage:
-  checked: 2026-07-19T06:09:09Z
-  volume_used_percent: 97
-  available_gib: 12.7
+  checked: 2026-07-19T06:51:37Z
+  volume_used_percent: 96
+  available_gib: 16.9
   risk: high
 
 cleanup:

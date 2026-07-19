@@ -44,6 +44,14 @@ ready:
       artifact: upgrade or reconciliation failure-path analysis
 
 waiting:
+  - project: astropy/astropy
+    issue: 18910
+    reason: pinned main and v8.0.1 sources prove the one-table identity shortcut across vstack, hstack, and dstack, but maintainers have not selected object, copy-depth, operation, dstack rank/index, or release-line semantics and BuildKit 6966 occupies the implementation slot
+    last_checked: 2026-07-19
+    next_check: monitor issue 18910; after slot release and authorized contact, revalidate ownership and ask table maintainers to select the contract before writing the focused offline regression
+    dossier: .contrib/dossiers/astropy-18910.md
+    cross_review: GO
+    observer_verdict: evidence-go-dispatch-wait
   - project: gwpy/gwpy
     issue: 1850
     reason: pinned source proves the supplied-ASD broadcast and adjacent silent-shortening regimes, but the issue omits its exact grid and maintainers have not chosen reject, shorten, or align semantics; BuildKit 6966 occupies the implementation slot
@@ -183,6 +191,14 @@ waiting:
     next_check: offer reproducer and request complete mount evidence before implementation
 
 completed:
+  - project: astropy/astropy
+    issue: 18910
+    artifact: pinned main and v8.0.1 identity matrix, historical fast-path intent, dstack rank/index boundary, copy-depth and private-path analysis, and an unexecuted offline regression design
+    dossier: .contrib/dossiers/astropy-18910.md
+    cross_review: GO
+    observer_verdict: evidence-go-dispatch-wait
+    completed: 2026-07-19
+    externally_posted: false
   - project: gwpy/gwpy
     issue: 1850
     artifact: pinned three-version source audit, exact impulse-to-tap length algebra, silent-shortening boundary, and deterministic future contract-test design
