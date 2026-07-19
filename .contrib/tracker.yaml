@@ -76,4 +76,10 @@ waiting:
     last_checked: 2026-07-19
     next_check: observe PR review and avoid duplicate CI changes
 
-completed: []
+completed:
+  - project: prometheus-operator/prometheus-operator
+    pull_request: 8695
+    artifact: adversarial maintainer review with one version-compatibility blocker
+    review: .contrib/reviews/prometheus-operator-8695.md
+    completed: 2026-07-19
+    externally_posted: false
