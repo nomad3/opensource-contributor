@@ -32,8 +32,6 @@ ready:
       issue: 4426
       artifact: apply saved debug-script e2e patch and run on a disposable cluster
   medium:
-    - project: opencost/opencost
-      artifact: select and reproduce an unassigned cost-accuracy or metrics issue
     - project: kubeflow/pipelines
       artifact: select a bounded Python SDK or pipeline reliability test
   high:
@@ -43,6 +41,11 @@ ready:
       artifact: upgrade or reconciliation failure-path analysis
 
 waiting:
+  - project: opencost/opencost
+    issue: 3769
+    reason: focused test proves spot price selection succeeds while Node.IsSpot remains false, but BuildKit 6966 occupies the implementation slot
+    last_checked: 2026-07-19
+    next_check: recheck ownership after BuildKit 6966 clears; apply saved failing test and preserve pre-fallback spot classification in UsageType
   - project: open-telemetry/opentelemetry-python-contrib
     issue: 4817
     reason: root cause and minimal fix are mapped, but repository policy requires human maintainer agreement and BuildKit 6966 occupies the implementation slot
@@ -115,6 +118,14 @@ waiting:
     next_check: offer reproducer and request complete mount evidence before implementation
 
 completed:
+  - project: opencost/opencost
+    issue: 3769
+    artifact: failing regression test, root-cause dossier, and resumable handoff
+    dossier: .contrib/dossiers/opencost-3769.md
+    patch: .contrib/patches/opencost-3769-failing-test.patch
+    handoff: .contrib/handoffs/opencost-3769.md
+    completed: 2026-07-19
+    externally_posted: false
   - project: open-telemetry/opentelemetry-python-contrib
     issue: 4817
     artifact: PyPy weak-reference teardown race root-cause and deterministic regression-test dossier

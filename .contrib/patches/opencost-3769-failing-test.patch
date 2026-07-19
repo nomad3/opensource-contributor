@@ -1,0 +1,44 @@
+diff --git a/pkg/cloud/provider/provider_test.go b/pkg/cloud/provider/provider_test.go
+index f20335b..0eef7b7 100644
+--- a/pkg/cloud/provider/provider_test.go
++++ b/pkg/cloud/provider/provider_test.go
+@@ -207,6 +207,39 @@ func TestCustomProviderNodePricingUsesDetectedGPUCount(t *testing.T) {
+ 	}
+ }
+ 
++func TestCustomProviderNodePricingReportsSpotUsage(t *testing.T) {
++	customProvider := &CustomProvider{
++		SpotLabel:      "opencost.node-type",
++		SpotLabelValue: "worker",
++		Pricing: map[string]*NodePrice{
++			"default": {
++				CPU: "0.01213",
++				RAM: "0.00273",
++			},
++			"default,spot": {
++				CPU: "0.32455",
++				RAM: "0.08114",
++			},
++		},
++	}
++
++	key := customProvider.GetKey(map[string]string{
++		"opencost.node-type": "worker",
++	}, nil)
++
++	node, _, err := customProvider.NodePricing(key)
++	if err != nil {
++		t.Fatalf("NodePricing returned error: %v", err)
++	}
++
++	if node.VCPUCost != "0.32455" {
++		t.Errorf("VCPUCost = %q, want spot price %q", node.VCPUCost, "0.32455")
++	}
++	if !node.IsSpot() {
++		t.Errorf("IsSpot() = false, want true for custom spot label")
++	}
++}
++
+ func TestCustomProviderClusterInfoUsesStaticDefaultName(t *testing.T) {
+ 	t.Setenv(coreenv.ClusterIDEnvVar, "")
+ 

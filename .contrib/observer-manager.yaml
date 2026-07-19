@@ -42,6 +42,14 @@ observed:
       evidence: weak reference is resolved twice across a collection boundary, matching the reported target=None teardown failure
       artifact: .contrib/dossiers/opentelemetry-python-contrib-4817.md
       next_check: human obtains maintainer agreement and BuildKit 6966 no longer occupies the implementation slot
+    - project: opencost/opencost
+      issue: 3769
+      result: waiting
+      evidence: focused test selects spot CPU price but fails because returned node has no spot UsageType
+      artifact: .contrib/dossiers/opencost-3769.md
+      dispatch_conflict: BuildKit 6966 remains the authoritative active implementation
+      process_breach: failing-test creation began a second implementation before the slot gate was enforced
+      next_check: resume only after the implementation slot clears or the user explicitly overrides the one-slot policy
 
 next_dispatch:
   role: observer
