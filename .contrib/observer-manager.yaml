@@ -25,6 +25,12 @@ observed:
       - no unit tests were added despite explicit maintainer feedback
     important:
       - shared validation helper is not wired into Alertmanager
+  reconnaissance:
+    project: prometheus-operator/prometheus-operator
+    issue: 7579
+    result: waiting
+    evidence: related PR 7584 covers only the operator-owned finalizer; report lacks exact finalizer and controller
+    artifact: .contrib/dossiers/prometheus-operator-7579.md
 
 next_dispatch:
   role: observer

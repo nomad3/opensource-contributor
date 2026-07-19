@@ -31,9 +31,6 @@ ready:
     - project: tektoncd/pipeline
       issue: 4426
       artifact: apply saved debug-script e2e patch and run on a disposable cluster
-    - project: prometheus-operator/prometheus-operator
-      issue: 7579
-      artifact: verify deletion/finalizer reconciliation semantics on current main
   medium:
     - project: opencost/opencost
       artifact: select and reproduce an unassigned cost-accuracy or metrics issue
@@ -46,6 +43,11 @@ ready:
       artifact: upgrade or reconciliation failure-path analysis
 
 waiting:
+  - project: prometheus-operator/prometheus-operator
+    issue: 7579
+    reason: exact finalizer and controller are unspecified; related PR 7584 covers only the operator-owned status-cleanup path
+    last_checked: 2026-07-19
+    next_check: ask for current-main reproduction with exact finalizer, controller, and feature-gate state before coding
   - project: moby/buildkit
     issue: 4001
     reason: prior author was invited to reopen PR 6813 and their branch remains live
