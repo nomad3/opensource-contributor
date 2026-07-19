@@ -2,14 +2,14 @@
 
 - Issue: <https://github.com/prometheus-operator/prometheus-operator/issues/8669>
 - Reported impact: silent Prometheus TSDB loss after node reboot
-- Status checked: 2026-07-18
-- Ownership: unassigned
+- Status checked: 2026-07-19
+- Ownership: unassigned, no comments, `needs-triage`
 - Overlapping pull request: none found
 - Recommendation: **investigate before implementation**
 
 ## Control reproduction result
 
-A reusable reproducer now exists under
+A reusable reproducer exists under
 `reproducers/prometheus-operator-8669/`. It was executed with an optional node
 restart on a Kubernetes v1.33.1 node created by kind v0.29.0, using Docker
 28.3.2 with the containerd image store and overlayfs.
@@ -64,6 +64,7 @@ Evidence at tag `v0.90.1`:
 - `StorageSpec.DisableMountSubPath` is serialized as
   `disableMountSubPath`.
 - `SubPathForStorage()` returns an empty subpath when that field is true.
+- The generated Prometheus CRD includes the field.
 - kube-prometheus-stack passes `prometheusSpec.storageSpec` directly into the
   generated Prometheus custom resource.
 
@@ -72,12 +73,18 @@ usage in a future release, but it is currently implemented.
 
 ## Why a code patch is premature
 
-The claim that a Kubernetes `subPath` PVC mount becomes the container's
-overlayfs writable layer is not yet backed by a minimal public reproducer or
-complete mount evidence. The issue includes a shortened mountinfo fragment but
-not the mount point, mount IDs, root, source, or the corresponding kubelet and
-containerd mount chain. Removing subpath globally could also alter established
-storage layouts and upgrade behavior.
+Kubernetes documents `volumeMount.subPath` as mounting a path inside the
+referenced volume. Its implementation constructs a host path under the base
+volume and passes that path to the runtime as a bind mount. The container
+runtime is not expected to redirect writes for that mount into the root
+filesystem merely because its snapshotter is overlayfs.
+
+The issue's shortened mountinfo fragment omits the mount point, mount IDs, root,
+source, and corresponding kubelet/containerd mount chain. An overlay line may
+describe the containing root filesystem rather than the distinct
+`/prometheus` mount; overlayfs may also underlie the PVC's host path, so
+filesystem type alone is not decisive. Removing subpath globally could also
+alter established storage layouts and upgrade behavior.
 
 ## Smallest useful next artifact
 
@@ -89,13 +96,21 @@ identical Prometheus resources:
 
 For each case capture:
 
-- rendered Prometheus CR and StatefulSet;
-- `/proc/self/mountinfo` from the Prometheus container, filtered by the exact
-  `/prometheus` mount point without truncation;
-- `findmnt -T /prometheus -o TARGET,SOURCE,FSTYPE,OPTIONS`;
+- rendered Prometheus CR, StatefulSet, and Pod;
+- the complete `/proc/self/mountinfo` entry whose mountpoint is exactly
+  `/prometheus`;
+- the node's `findmnt` tree for the PVC and kubelet volume paths;
 - a sentinel file written under `/prometheus`;
 - the host/PV path before and after pod restart and node reboot;
-- containerd and kubelet versions plus snapshotter and storage class details.
+- containerd, kubelet, Talos, and local-path provisioner versions;
+- snapshotter, storage class, and node mount configuration.
+
+Do not assume `findmnt` exists in the Prometheus image. Read
+`/proc/self/mountinfo` directly there. Talos does not provide a conventional
+node shell, so collect node-side `findmnt`, path, and sync evidence through a
+documented `talosctl` support/debug workflow or a purpose-built privileged
+debug pod with the host root mounted explicitly. Record that execution vehicle
+and its host-path mapping with the result.
 
 The comparison will distinguish an operator bug from a kubelet, containerd,
 Talos, or local-path provisioner interaction.
@@ -127,3 +142,10 @@ Talos, or local-path provisioner interaction.
 > that `/prometheus` itself is the overlay mount. If the A/B test reproduces
 > data loss only with subpath enabled, that would give us a safe regression
 > target without guessing at a broad storage-layout change.
+
+## Promotion boundary
+
+This becomes implementation-ready only if the A/B evidence isolates an
+operator-owned defect that remains after accounting for the existing field.
+Until then, an operator code change would be speculative and could hide a node
+storage problem without preventing data loss.
