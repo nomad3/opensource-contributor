@@ -12,12 +12,11 @@ profile:
   rule: one active implementation at a time
 
 active:
-  project: moby/buildkit
-  issue: 4001
-  url: https://github.com/moby/buildkit/issues/4001
-  stage: reconnaissance
-  next_action: verify OTLP implementation, supported environment variables, documentation gaps, and overlapping work
-  estimated_capacity: medium
+  project: null
+  issue: null
+  stage: selection
+  next_action: choose one non-overlapping ready item after BuildKit #4001 ownership recheck
+  estimated_capacity: low
   blocked: false
   externally_posted: false
 
@@ -31,9 +30,6 @@ ready:
     - project: open-telemetry/opentelemetry-python-contrib
       artifact: map GenAI instrumentation tests to current semantic conventions
   medium:
-    - project: moby/buildkit
-      issue: 4001
-      artifact: verified OTLP Collector example and bounded documentation patch
     - project: opencost/opencost
       artifact: select and reproduce an unassigned cost-accuracy or metrics issue
     - project: kubeflow/pipelines
@@ -48,6 +44,11 @@ ready:
       artifact: upgrade or reconciliation failure-path analysis
 
 waiting:
+  - project: moby/buildkit
+    issue: 4001
+    reason: prior author was invited to reopen PR 6813 and their branch remains live
+    last_checked: 2026-07-18
+    next_check: 2026-08-01; ask maintainers before taking over if still inactive
   - project: kserve/kserve
     issue: 5412
     reason: three open overlapping pull requests (5450, 5693, 5697)
