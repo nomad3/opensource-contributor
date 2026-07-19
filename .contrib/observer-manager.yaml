@@ -1,0 +1,47 @@
+schema_version: 1
+updated: 2026-07-19
+
+mode: read-only-supervisor
+implementation_limit: 1
+external_mutations_require_human_authorization: true
+
+observed:
+  active:
+    project: moby/buildkit
+    pull_request: 6966
+    head: 14e0dfbd2cdcae3f1f29d9560bd90341cba55eb0
+    state: published-awaiting-external
+    draft: true
+    ci: authorization-required
+    ci_detail: six substantive workflows completed action_required with zero jobs
+    next_action: monitor workflow authorization/execution and maintainer review; do not mark ready without human decision
+  review:
+    project: prometheus-operator/prometheus-operator
+    pull_request: 8645
+    verdict: do-not-promote
+    artifact: .contrib/reviews/prometheus-operator-8645.md
+    blockers:
+      - reference tracker is published before TLS validation mutates its live map
+      - no unit tests were added despite explicit maintainer feedback
+    important:
+      - shared validation helper is not wired into Alertmanager
+
+next_dispatch:
+  role: observer
+  objective: monitor BuildKit PR 6966 for review, head change, or workflow authorization/execution
+  artifact: update tracker or review handoff only when external state changes
+  stop_when: no actionable external change exists
+
+capacity:
+  provider_meter: unknown
+  routing: observation-only
+
+storage:
+  checked: 2026-07-19T02:00:00Z
+  volume_used_percent: 96
+  available_gib: 20
+  risk: high
+
+cleanup:
+  prometheus_operator_pr_8645_worktree: removed
+  go_build_and_test_cache: cleaned

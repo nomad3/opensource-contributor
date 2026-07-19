@@ -1,0 +1,4 @@
+interface:
+  display_name: "Observer Manager"
+  short_description: "Orchestrate evidence-first OSS contribution work"
+  default_prompt: "Use $observer-manager to inspect the contribution control plane and dispatch the single highest-value safe next work unit."

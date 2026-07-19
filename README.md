@@ -44,6 +44,12 @@ reset information remain the source of truth.
 - [Dossier template](.contrib/dossiers/TEMPLATE.md) defines reconnaissance evidence.
 - [Handoff template](.contrib/handoffs/TEMPLATE.md) preserves resumable state.
 - [Agent prompts](.contrib/prompts/) separate investigation, implementation, and review.
+- [Observer prompt](.contrib/prompts/observer.md) coordinates candidate research,
+  enforces ownership gates, and protects the one-active-implementation rule.
+- [Observer Manager skill](skills/observer-manager/SKILL.md) provides a reusable,
+  installable supervisor for capacity, queues, CI/reviews, handoffs, and cleanup.
+- [Observer state](.contrib/observer-manager.yaml) records the current decision
+  without granting the agent authority to communicate upstream.
 - [Contributing](CONTRIBUTING.md) explains how to suggest or validate an opportunity.
 
 ## Current direction

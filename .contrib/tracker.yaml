@@ -17,7 +17,7 @@ active:
   pull_request: 6966
   url: https://github.com/moby/buildkit/pull/6966
   stage: draft-pr
-  next_action: monitor CI and respond narrowly to maintainer review
+  next_action: monitor six action-required workflows and maintainer review; human decides when to mark ready
   estimated_capacity: low
   blocked: false
   externally_posted: true
@@ -103,6 +103,12 @@ waiting:
     next_check: offer reproducer and request complete mount evidence before implementation
 
 completed:
+  - project: prometheus-operator/prometheus-operator
+    pull_request: 8645
+    artifact: adversarial maintainer review with reference-tracker race blocker
+    review: .contrib/reviews/prometheus-operator-8645.md
+    completed: 2026-07-19
+    externally_posted: false
   - project: prometheus-operator/prometheus-operator
     issue: 8669
     artifact: kind/containerd A/B storage persistence reproducer and node-restart evidence
