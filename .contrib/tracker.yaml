@@ -32,8 +32,8 @@ ready:
       issue: 4426
       artifact: apply saved debug-script e2e patch and run on a disposable cluster
     - project: prometheus-operator/prometheus-operator
-      issue: 8669
-      artifact: A/B reproduce PVC persistence with and without disableMountSubPath
+      issue: 7579
+      artifact: verify deletion/finalizer reconciliation semantics on current main
   medium:
     - project: opencost/opencost
       artifact: select and reproduce an unassigned cost-accuracy or metrics issue
@@ -96,8 +96,21 @@ waiting:
     reason: active overlapping PR 7863
     last_checked: 2026-07-19
     next_check: observe upstream resolution; do not duplicate secret reconciliation work
+  - project: prometheus-operator/prometheus-operator
+    issue: 8669
+    reason: kind/containerd control passes; Talos and local-path A/B evidence requires reporter-equivalent environment
+    last_checked: 2026-07-18
+    next_check: offer reproducer and request complete mount evidence before implementation
 
 completed:
+  - project: prometheus-operator/prometheus-operator
+    issue: 8669
+    artifact: kind/containerd A/B storage persistence reproducer and node-restart evidence
+    dossier: .contrib/dossiers/prometheus-operator-8669.md
+    reproducer: reproducers/prometheus-operator-8669
+    cross_review: Claude Fable 5 GO
+    completed: 2026-07-18
+    externally_posted: false
   - project: prometheus-operator/prometheus-operator
     pull_request: 8695
     artifact: validated Alertmanager 0.33.0 event-recorder version-gate suggestion

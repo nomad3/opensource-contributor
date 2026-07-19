@@ -2,10 +2,37 @@
 
 - Issue: <https://github.com/prometheus-operator/prometheus-operator/issues/8669>
 - Reported impact: silent Prometheus TSDB loss after node reboot
-- Status checked: 2026-07-19
+- Status checked: 2026-07-18
 - Ownership: unassigned
 - Overlapping pull request: none found
 - Recommendation: **investigate before implementation**
+
+## Control reproduction result
+
+A reusable reproducer now exists under
+`reproducers/prometheus-operator-8669/`. It was executed with an optional node
+restart on a Kubernetes v1.33.1 node created by kind v0.29.0, using Docker
+28.3.2 with the containerd image store and overlayfs.
+
+Both the direct and `subPath: prometheus-db` mounts:
+
+- resolved to ext4-backed `/dev/vda1` mounts at `/prometheus`;
+- exposed their sentinels at the corresponding node paths;
+- retained the expected content after pod recreation;
+- retained the expected content after the kind node container restarted.
+
+Result:
+
+```text
+PASS: both storage layouts retained their sentinels
+```
+
+Full evidence and interpretation:
+`reproducers/prometheus-operator-8669/result-kind-docker-desktop.md`.
+
+This control contradicts the broad claim that containerd plus overlayfs always
+redirects a Kubernetes subpath mount into an ephemeral container snapshot. It
+does not contradict a narrower Talos/local-path/version-specific defect.
 
 ## Why it is urgent
 
@@ -91,6 +118,8 @@ Talos, or local-path provisioner interaction.
 >         # existing PVC template
 > ```
 >
+> I also ran a control A/B test on kind with Docker's containerd image store:
+> both layouts were node-visible and survived pod plus node-container restarts.
 > Could you compare the default and disabled-subpath cases and attach the full
 > `/proc/self/mountinfo` line for `/prometheus` (including mount point, root,
 > source, and options), plus the containerd snapshotter and local-path
@@ -98,4 +127,3 @@ Talos, or local-path provisioner interaction.
 > that `/prometheus` itself is the overlay mount. If the A/B test reproduces
 > data loss only with subpath enabled, that would give us a safe regression
 > target without guessing at a broad storage-layout change.
-

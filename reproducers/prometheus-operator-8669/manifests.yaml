@@ -1,0 +1,133 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: po-8669
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: po-8669-with-subpath
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: po-8669-static
+  hostPath:
+    path: /var/local/po-8669/with-subpath
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: po-8669-without-subpath
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: po-8669-static
+  hostPath:
+    path: /var/local/po-8669/without-subpath
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: with-subpath
+  namespace: po-8669
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: po-8669-static
+  volumeName: po-8669-with-subpath
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: without-subpath
+  namespace: po-8669
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: po-8669-static
+  volumeName: po-8669-without-subpath
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: with-subpath
+  namespace: po-8669
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: with-subpath
+  template:
+    metadata:
+      labels:
+        app: with-subpath
+    spec:
+      initContainers:
+        - name: prepare-subpath
+          image: busybox:1.36
+          command:
+            - mkdir
+            - -p
+            - /volume/prometheus-db
+          volumeMounts:
+            - name: storage
+              mountPath: /volume
+      containers:
+        - name: writer
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - sleep 86400
+          volumeMounts:
+            - name: storage
+              mountPath: /prometheus
+              subPath: prometheus-db
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: with-subpath
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: without-subpath
+  namespace: po-8669
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: without-subpath
+  template:
+    metadata:
+      labels:
+        app: without-subpath
+    spec:
+      containers:
+        - name: writer
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - sleep 86400
+          volumeMounts:
+            - name: storage
+              mountPath: /prometheus
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: without-subpath
