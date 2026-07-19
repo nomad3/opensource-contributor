@@ -27,7 +27,7 @@ ready:
     - project: kubernetes-sigs/kueue
       artifact: triage current help-wanted metrics or operational-documentation issues
     - project: open-telemetry/opentelemetry-python-contrib
-      artifact: map GenAI instrumentation tests to current semantic conventions
+      artifact: map GenAI instrumentation tests to current semantic conventions, excluding waiting issue 4816
     - project: tektoncd/pipeline
       issue: 4426
       artifact: apply saved debug-script e2e patch and run on a disposable cluster
@@ -43,6 +43,11 @@ ready:
       artifact: upgrade or reconciliation failure-path analysis
 
 waiting:
+  - project: open-telemetry/opentelemetry-python-contrib
+    issue: 4816
+    reason: bootstrap generation has no external GenAI metadata source and the new OpenAI mapping conflicts with existing openai-v2 detection
+    last_checked: 2026-07-19
+    next_check: human should obtain maintainer direction on OpenAI replacement and external metadata ingestion and maintenance
   - project: prometheus-operator/prometheus-operator
     issue: 7579
     reason: exact finalizer and controller are unspecified; related PR 7584 covers only the operator-owned status-cleanup path
@@ -105,6 +110,12 @@ waiting:
     next_check: offer reproducer and request complete mount evidence before implementation
 
 completed:
+  - project: open-telemetry/opentelemetry-python-contrib
+    issue: 4816
+    artifact: cross-repository bootstrap scope and compatibility dossier
+    dossier: .contrib/dossiers/opentelemetry-python-contrib-4816.md
+    completed: 2026-07-19
+    externally_posted: false
   - project: prometheus-operator/prometheus-operator
     pull_request: 8645
     artifact: adversarial maintainer review with reference-tracker race blocker
