@@ -93,6 +93,14 @@ waiting:
     handoff: .contrib/handoffs/gammapy-6716.md
     cross_review: GO
     observer_verdict: evidence-go-dispatch-wait
+  - project: gammapy/gammapy
+    issue: 6775
+    reason: the released-stack failure is source-localized to a point-region rectangle conversion on a 180-degree-per-pixel CAR geometry, but the exact non-finite matrix and durable Gammapy-versus-Regions repair contract remain unresolved and BuildKit 6966 occupies the implementation slot
+    last_checked: 2026-07-19
+    next_check: observe issue 6775 and the dependency caps; after slot release and authorized human contact, revalidate ownership and ask maintainers to choose the repository and release target before exact-version runtime work
+    dossier: .contrib/dossiers/gammapy-6775.md
+    cross_review: GO
+    observer_verdict: evidence-go-dispatch-wait
   - project: sunpy/sunpy
     issue: 8599
     reason: current and historical behavior intentionally fails fast by default and allow_errors=true already loads the valid science HDU; only a maintainer-approved file-only auxiliary-HDU exception could justify code
@@ -191,6 +199,14 @@ waiting:
     next_check: offer reproducer and request complete mount evidence before implementation
 
 completed:
+  - project: gammapy/gammapy
+    issue: 6775
+    artifact: pinned Gammapy and Regions source/dependency matrix, exact point-region Jacobian and SVD call path, containment history, and unexecuted 0.11-versus-0.12 position matrix
+    dossier: .contrib/dossiers/gammapy-6775.md
+    cross_review: GO
+    observer_verdict: evidence-go-dispatch-wait
+    completed: 2026-07-19
+    externally_posted: false
   - project: astropy/astropy
     issue: 18910
     artifact: pinned main and v8.0.1 identity matrix, historical fast-path intent, dstack rank/index boundary, copy-depth and private-path analysis, and an unexecuted offline regression design

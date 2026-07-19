@@ -132,6 +132,19 @@ observed:
         - maintainers must define the direct-maintenance or backport target
         - BuildKit 6966 occupies the sole implementation slot
       next_check: observe issue 6716; after slot release and user-authorized contact, obtain the exact 2.0.2 reader-backport contract and revalidate ownership, matching work, and current maintenance heads
+    - project: gammapy/gammapy
+      issue: 6775
+      result: waiting
+      evidence: the reported Gammapy 2.1 and Regions 0.12 stack reaches a fixed one-pixel Jacobian and SVD while converting a fallback rectangle on a 180-degree-per-pixel CAR geometry; current Gammapy contains the path with regions<0.12
+      artifact: .contrib/dossiers/gammapy-6775.md
+      cross_review: GO
+      observer_verdict: evidence-go-dispatch-wait
+      blockers:
+        - the exact non-finite matrix boundary has not been captured in a pinned runtime
+        - maintainers must choose Gammapy adaptation, Regions repair, or dependency containment and the applicable release line
+        - Gammapy policy requires a human issue discussion before coding
+        - BuildKit 6966 occupies the sole implementation slot
+      next_check: observe issue 6775, dependency caps, and both repository heads; after slot release and user-authorized contact, revalidate ownership and ask maintainers to choose the repository and release contract before creating the exact-version diagnostic environment
     - project: sunpy/sunpy
       issue: 8599
       result: waiting
@@ -165,9 +178,9 @@ capacity:
   routing: observation-only
 
 storage:
-  checked: 2026-07-19T06:51:37Z
-  volume_used_percent: 96
-  available_gib: 16.9
+  checked: 2026-07-19T07:20:32Z
+  volume_used_percent: 94
+  available_gib: 27.8
   risk: high
 
 cleanup:

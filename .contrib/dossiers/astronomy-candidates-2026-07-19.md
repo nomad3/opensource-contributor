@@ -14,14 +14,15 @@ Compiled from public checks completed on 2026-07-19; Bilby was revalidated at
 Lightkurve #1565 at `2026-07-19T05:27:48Z`.
 GWPy #1850 received a source, history, policy, and ownership audit at
 `2026-07-19T05:59:41Z`; Astropy #18910 received the same bounded audit at
-`2026-07-19T06:40:44Z`.
+`2026-07-19T06:40:44Z`; Gammapy #6775 received a cross-project dependency,
+source, history, policy, and ownership audit at `2026-07-19T07:04:14Z`.
 
 This is a non-authoritative lead inventory, not an operational queue. Only the
 Observer Manager may promote or dispatch an item. Bilby #1114, Lightkurve
 #1531 and #1565, yt #5439, Dask #12507, Gammapy #6716, GWPy #1850, and SunPy
-#8599 have received deeper audits. Astropy #18910 now also has a full
-source-only dossier. The remaining entries are issue-level leads that still
-require a fresh evidence bundle with exact timestamps,
+#8599 have received deeper audits. Astropy #18910 and Gammapy #6775 now also
+have full source-only dossiers. The remaining entries are issue-level leads
+that still require a fresh evidence bundle with exact timestamps,
 assignment/overlap searches, resource requirements, and recheck conditions
 before promotion.
 
@@ -33,7 +34,7 @@ before promotion.
 | 2 | Lightkurve | TESS/Kepler archive and time-series correctness | Wrong-target and nondeterministic-product bugs directly threaten dataset selection. |
 | 3 | Dask and xarray | Scientific-pipeline determinism and scalability | The hash-seed optimizer defect is locally reproduced and affects graph construction for survey, remote-sensing, and other chunked-array workloads. |
 | 4 | yt | Scalable simulation analysis | Excellent match for data correctness, Dask, memory, performance, and very large datasets. |
-| 5 | Gammapy | Dataset compatibility and CI | Scientific results depend on stable serialization, numerical correctness, and dependency compatibility. |
+| 5 | Gammapy | Dataset compatibility and CI | Two bounded dossiers now cover serialized-analysis compatibility and a released-stack energy-dispersion validation failure. |
 | 6 | Astropy ecosystem | Core data formats, archive access, and coordinates | Foundational impact and strong review standards; the singleton table-stack ownership defect now has a bounded contract dossier. |
 | 7 | Survey-scale infrastructure | LSDB, HATS, SkyPortal, Fink, and RAIL | Strategic data/ML infrastructure fit; issue selection requires deeper setup and coordination. |
 
@@ -47,7 +48,7 @@ before promotion.
 | yt | [#5439 — GIZMO frontend fails on empty particle chunks](https://github.com/yt-project/yt/issues/5439) | Overlap confirmed; assigned reporter owns active [PR #5440](https://github.com/yt-project/yt/pull/5440); [read-only review](../reviews/yt-5440.md) | Do not duplicate. The guard is narrow, but an unresolved reviewer request remains and the FIRE-only regression is excluded or skipped by ordinary CI. A deterministic cosmological empty-chunk test is mapped for the existing author. |
 | GWPy | [#1850 — whitening short time series fails with a supplied ASD](https://gitlab.com/gwpy/gwpy/-/work_items/1850) | Three pinned versions source-audited; exact length algebra and future regression designed; independently reviewed; [full dossier](gwpy-1850.md) | A supplied ASD can yield an impulse below half the requested taps and broadcast-fail; the adjacent range silently returns fewer taps. Evidence GO, but exact reporter inputs, maintainer semantics, and the implementation slot remain blockers. |
 | Dask | [#12507 — optimized graph depends on `PYTHONHASHSEED`](https://github.com/dask/dask/issues/12507) | Locally reproduced on 2026.7.1, phase-traced, source-inspected, and independently reviewed; [full dossier](dask-12507.md) | Seeds 0–7 produced 334–728 optimized tasks locally. PR #11899 removed per-layer key filtering; restoring it yields 82 tasks across every seed and correct computed output. Open, unassigned, and untriaged; evidence GO, dispatch WAIT. |
-| Gammapy | [#6775 — SVD failures with the current scientific Python stack](https://github.com/gammapy/gammapy/issues/6775) | Issue-reported lead; public ownership/overlap checked on scan date | The report shows gamma-ray response-map failures with a new dependency stack. Reduce the WCS matrix failure and locate the Gammapy/Regions/dependency boundary. |
+| Gammapy | [#6775 — SVD failures with the current scientific Python stack](https://github.com/gammapy/gammapy/issues/6775) | Pinned Gammapy/Regions release and main sources, dependency caps, history, policy, and overlap audited; independently reviewed; [full dossier](gammapy-6775.md) | The released-stack failure reaches Regions' fixed one-pixel Jacobian/SVD while converting a fallback rectangle on Gammapy's 180-degree-per-pixel CAR geometry. Current main contains it with `regions<0.12`; evidence is GO, but runtime, repair owner, release contract, and implementation remain WAIT. |
 | Gammapy | [#6716 — Gammapy 2.0.1 cannot read a dataset written by 2.1](https://github.com/gammapy/gammapy/issues/6716) | Pinned release/maintenance source matrix and markerless-YAML call path; dispatch proxy plus 2.1-producer acceptance control designed; independently reviewed; [full dossier](gammapy-6716.md) | Milestone 2.0.2 supports a maintenance fix. The old reader defaults to OGIP despite already supporting explicit GADF, so 2.1 output fails at missing `EBOUNDS`. Evidence is GO; dispatch waits for mandatory issue discussion, target direction, and the implementation slot. |
 | Gammapy | [#6787 — CI not running correctly on development dependencies](https://github.com/gammapy/gammapy/issues/6787) | Direct overlap found | Draft [PR #6731](https://github.com/gammapy/gammapy/pull/6731) covers the development-dependency CI lane; observe and do not duplicate. |
 | SunPy | [#8599 — GOES-19 CCOR science data does not load as a map](https://github.com/sunpy/sunpy/issues/8599) | Current/stable source and contract history mapped; synthetic multi-HDU regression designed | A second 2-D HDU is invalid for `Map`; `allow_errors=True` loads the valid science HDU and default fail-fast behavior is historically intentional. Treat code as no-go unless maintainers request a narrow file-derived auxiliary-HDU exception. |
@@ -141,6 +142,24 @@ Astropy #18910:
 6. Independent source and policy reviews are GO after correcting test,
    impact-inference, overlap, and backport claims.
 
+Gammapy #6775:
+
+1. Gammapy `v2.1`, current `v2.1.x`, current `main`, Regions `v0.11`,
+   `v0.12`, and current `main` were pinned and compared.
+2. The traceback is mapped from diagonal EDisp point extraction through
+   Gammapy's fallback rectangle to Regions' fixed one-pixel Jacobian and SVD.
+3. The 180-degree-per-pixel CAR geometry makes the nominal one-pixel sample a
+   non-local projection step; the earliest non-finite value remains a
+   source-backed inference until exact-version instrumentation runs.
+4. Gammapy PRs #6737 and #6748 contain the reported stack through Astropy,
+   SciPy, and Regions upper bounds; they do not repair the call path.
+5. Three failing positions are issue-reported; the fourth parameterized pole
+   and all Regions 0.11 controls remain explicitly unexecuted.
+6. A no-data existing EDisp test and disposable pre-SVD instrumentation plan
+   are preserved in the [full dossier](gammapy-6775.md).
+7. Observer acceptance is GO; dispatch waits for the implementation slot,
+   human issue discussion, exact runtime boundary, and maintainer ownership.
+
 Second-round astronomy-native audits:
 
 1. Lightkurve #1565 is source-established and scientifically meaningful, but an
@@ -178,7 +197,9 @@ These categories summarize potential research depth only. They do not confer
 - GWPy #1850 — [source-confirmed impulse/tap compatibility gap](gwpy-1850.md);
   evidence GO, dispatch WAIT on reporter metadata, maintainer semantics, and
   the implementation slot.
-- Gammapy #6775 — reduce dependency-sensitive WCS/SVD failures.
+- Gammapy #6775 — [source-mapped dependency-sensitive WCS/SVD boundary](gammapy-6775.md);
+  evidence GO, dispatch WAIT on exact runtime evidence, repair ownership,
+  release treatment, mandatory issue discussion, and the implementation slot.
 - Gammapy #6716 — [bounded GADF reader detection](gammapy-6716.md) for the
   2.0.x maintenance line; evidence GO, dispatch WAIT.
 - Astropy #18910 — [source-confirmed singleton table alias](astropy-18910.md);
@@ -238,12 +259,15 @@ These categories summarize potential research depth only. They do not confer
 ## Decision
 
 - Completed reconnaissance: Bilby #1114, Lightkurve #1531, Dask #12507,
-  Gammapy #6716, source-only GWPy #1850, and source-only Astropy #18910;
-  fresh bounded audits also cover Lightkurve #1565 and SunPy #8599
+  Gammapy #6716 and #6775, source-only GWPy #1850, and source-only Astropy
+  #18910; fresh bounded audits also cover Lightkurve #1565 and SunPy #8599
 - Best data-integrity implementation after slot and ownership recheck:
   Lightkurve #1531
 - Best astronomy-native maintenance candidate after slot and contract recheck:
   Gammapy #6716
+- Best bounded astronomy dependency-compatibility investigation:
+  Gammapy #6775; exact-version diagnostics wait for repository/release
+  ownership, the free slot, and authorized human discussion
 - Best bounded gravitational-wave preprocessing investigation: GWPy #1850;
   implementation waits for exact inputs and maintainers' scientific contract
 - Best bounded core astronomy table/API contract: Astropy #18910;
