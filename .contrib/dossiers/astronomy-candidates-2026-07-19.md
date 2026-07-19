@@ -17,16 +17,18 @@ GWPy #1850 received a source, history, policy, and ownership audit at
 `2026-07-19T06:40:44Z`; Gammapy #6775 received a cross-project dependency,
 source, history, policy, and ownership audit at `2026-07-19T07:04:14Z`; LSDB
 #1307 received a bounded LSDB/HATS invariant, source, history, policy, and
-ownership audit at `2026-07-19T07:34:46Z`.
+ownership audit at `2026-07-19T07:34:46Z`; LSDB #1328 received a bounded
+coarse-margin, downstream-propagation, history, policy, and ownership audit at
+`2026-07-19T08:09:42Z`.
 
 This is a non-authoritative lead inventory, not an operational queue. Only the
 Observer Manager may promote or dispatch an item. Bilby #1114, Lightkurve
 #1531 and #1565, yt #5439, Dask #12507, Gammapy #6716, GWPy #1850, and SunPy
 #8599 have received deeper audits. Astropy #18910 and Gammapy #6775 now also
-have full source-only dossiers, as does LSDB #1307. The remaining entries are
-issue-level leads that still require a fresh evidence bundle with exact timestamps,
-assignment/overlap searches, resource requirements, and recheck conditions
-before promotion.
+have full source-only dossiers, as do LSDB #1307 and #1328. The remaining
+entries are issue-level leads that still require a fresh evidence bundle with
+exact timestamps, assignment/overlap searches, resource requirements, and
+recheck conditions before promotion.
 
 ## Project ranking
 
@@ -38,7 +40,7 @@ before promotion.
 | 4 | yt | Scalable simulation analysis | Excellent match for data correctness, Dask, memory, performance, and very large datasets. |
 | 5 | Gammapy | Dataset compatibility and CI | Two bounded dossiers now cover serialized-analysis compatibility and a released-stack energy-dispersion validation failure. |
 | 6 | Astropy ecosystem | Core data formats, archive access, and coordinates | Foundational impact and strong review standards; the singleton table-stack ownership defect now has a bounded contract dossier. |
-| 7 | Survey-scale infrastructure | LSDB, HATS, SkyPortal, Fink, and RAIL | Strategic data/ML infrastructure fit; LSDB #1307 is a source-confirmed spatial-invariant gap, but its comparison and performance contract needs maintainer direction. |
+| 7 | Survey-scale infrastructure | LSDB, HATS, SkyPortal, Fink, and RAIL | Strategic data/ML infrastructure fit; LSDB #1307 exposes a spatial-invariant gap and #1328 exposes coarse-margin candidate expansion, but both need maintainer-selected scientific and performance contracts. |
 
 ## Candidate issues
 
@@ -56,6 +58,7 @@ before promotion.
 | SunPy | [#8599 — GOES-19 CCOR science data does not load as a map](https://github.com/sunpy/sunpy/issues/8599) | Current/stable source and contract history mapped; synthetic multi-HDU regression designed | A second 2-D HDU is invalid for `Map`; `allow_errors=True` loads the valid science HDU and default fail-fast behavior is historically intentional. Treat code as no-go unless maintainers request a narrow file-derived auxiliary-HDU exception. |
 | Astropy | [#18910 — one-table stack returns the caller's table despite documenting a new table](https://github.com/astropy/astropy/issues/18910) | Pinned main/`v8.0.1` source, tests, history, policy, and overlap audited; independently reviewed; [full dossier](astropy-18910.md) | The identity alias and top-level metadata effect are verified. Evidence is GO; dispatch waits for table-maintainer decisions on copy depth, vstack-only versus all operations, singleton `dstack` rank/index behavior, release treatment, and the implementation slot. |
 | LSDB | [#1307 — coordinate-changing UDFs can invalidate HATS spatial structure](https://github.com/astronomy-commons/lsdb/issues/1307) | Pinned LSDB/HATS source, three UDF entry points, history, policy, and public ownership signals audited; independently reviewed; [full dossier](lsdb-1307.md) | The APIs retain structural state without comparing output coordinates, creating a source-supported spatial-integrity risk. Evidence is GO; runtime work, Project V2 and adjacent-work coordination, maintainer-selected row/performance semantics, human upstream contact, and the implementation slot remain WAIT. |
+| LSDB | [#1328 — non-fine filtering can retain distant margin rows](https://github.com/astronomy-commons/lsdb/issues/1328) | Pinned LSDB/HATS coarse/fine search, margin expansion, downstream input paths, history, policy, and public ownership signals audited; independently reviewed; [full dossier](lsdb-1328.md) | Source proves extra margin rows can reach crossmatch and eligible join inputs, with nested joins requiring an aligned right pixel. It does not prove a false default crossmatch or changed real join. Evidence is GO; runtime, maintainer-selected completeness/margin/metadata/performance semantics, human contact, and the implementation slot remain WAIT. |
 | yt | [#2281 — faster particle depositions](https://github.com/yt-project/yt/issues/2281) | Issue-reported benchmark lead | Performance-sensitive and broad. Requires fresh ownership/overlap checks, representative datasets, and baseline evidence. |
 | SunPy | [#8416 — support arbitrary APE-14 WCS in `GenericMap.plot`](https://github.com/sunpy/sunpy/issues/8416) | Overlap found | Do not duplicate: active [PR #8684](https://github.com/sunpy/sunpy/pull/8684) implements the requested support. |
 | Astroquery | [#3626 — VizieR errors appear as empty results](https://github.com/astropy/astroquery/issues/3626) | Overlap found | Observe only: active [PR #3632](https://github.com/astropy/astroquery/pull/3632) overlaps the error-semantics work. |
@@ -179,6 +182,26 @@ LSDB #1307:
    correspondence, equality, laziness, scope, performance, policy, and slot
    decisions.
 
+LSDB #1328:
+
+1. Current LSDB and HATS sources, issue history, public ownership signals,
+   contribution policy, and non-fine search path were pinned and mapped.
+2. `fine=False` skips point filtering after HATS neighbor-expands margin
+   partition selection, so extra margin rows remain available to downstream
+   candidate frames.
+3. Ordinary and nested crossmatch, keyed and association joins, and eligible
+   nested joins consume right margins; nested joins require an aligned right
+   pixel.
+4. The issue-reported pixel-width distance and strange crossmatches were not
+   measured locally, and source alone does not prove a false default
+   crossmatch, changed real join, affected science result, or performance cost.
+5. A repository-local boundary matrix covers exact-region, coarse-main,
+   neighbor-margin, radius, key-collision, empty, and no-margin controls; it was
+   not executed and encodes no selected fix.
+6. Independent review is GO; runtime, implementation, and human contact wait
+   for completeness, margin, metadata, compatibility, performance, policy, and
+   slot decisions.
+
 Second-round astronomy-native audits:
 
 1. Lightkurve #1565 is source-established and scientifically meaningful, but an
@@ -196,6 +219,9 @@ Second-round astronomy-native audits:
 5. LSDB #1307 is a source-confirmed survey-catalog spatial-invariant gap, but
    runtime work must wait for human coordination and maintainer-selected row
    correspondence and survey-scale performance semantics.
+6. LSDB #1328 is a source-confirmed coarse-margin candidate-expansion boundary,
+   but final-result correctness and cost are unmeasured and maintainers must
+   define which coarse rows require complete margin support.
 
 The Observer may continue read-only monitoring. Upstream contact requires explicit
 user authorization. Bilby implementation additionally requires maintainer-defined
@@ -205,7 +231,8 @@ free Observer slot and a fresh reporter-intent and overlap check. Dask and Gamma
 require a free slot and fresh maintainer/overlap checks. Astropy requires its
 table ownership and rank contract before code. yt #5439 must remain observe-only
 while PR #5440 is active. LSDB requires human-owned coordination and a
-maintainer-selected spatial-validation contract before runtime or code.
+maintainer-selected spatial-validation or coarse-margin contract before
+runtime or code.
 
 ## Non-authoritative research inventory
 
@@ -232,6 +259,10 @@ These categories summarize potential research depth only. They do not confer
   evidence GO, dispatch WAIT on human Project V2 and adjacent-work
   coordination, row correspondence, comparison/laziness/scope/performance
   semantics, and the implementation slot.
+- LSDB #1328 — [source-confirmed coarse-margin candidate expansion](lsdb-1328.md);
+  evidence GO, dispatch WAIT on human-owned coordination, exact-region versus
+  all-coarse-main-row completeness, margin/metadata/performance semantics,
+  runtime evidence, and the implementation slot.
 
 ### Deep research
 
@@ -287,8 +318,8 @@ These categories summarize potential research depth only. They do not confer
 
 - Completed reconnaissance: Bilby #1114, Lightkurve #1531, Dask #12507,
   Gammapy #6716 and #6775, source-only GWPy #1850, source-only Astropy #18910,
-  and source-only LSDB #1307; fresh bounded audits also cover Lightkurve #1565
-  and SunPy #8599
+  and source-only LSDB #1307 and #1328; fresh bounded audits also cover
+  Lightkurve #1565 and SunPy #8599
 - Best data-integrity implementation after slot and ownership recheck:
   Lightkurve #1531
 - Best astronomy-native maintenance candidate after slot and contract recheck:
@@ -300,9 +331,10 @@ These categories summarize potential research depth only. They do not confer
   implementation waits for exact inputs and maintainers' scientific contract
 - Best bounded core astronomy table/API contract: Astropy #18910;
   implementation waits for table-maintainer decisions and the free slot
-- Best bounded survey-scale spatial-integrity investigation: LSDB #1307;
+- Best bounded survey-scale spatial-integrity investigations: LSDB #1307 for
+  coordinate-transform invariants and #1328 for coarse-margin semantics;
   evidence is GO, while runtime and implementation wait for human coordination,
-  maintainer-selected row/performance semantics, and the free slot
+  maintainer-selected correctness/performance contracts, and the free slot
 - Bounded simulation implementation candidate: reselection required; yt #5439
   is already owned by active PR #5440
 - Best evidence-backed cross-science performance lane: Dask #12507

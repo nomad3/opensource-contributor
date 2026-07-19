@@ -45,6 +45,14 @@ ready:
 
 waiting:
   - project: astronomy-commons/lsdb
+    issue: 1328
+    reason: pinned LSDB and HATS sources prove that non-fine search skips row filtering after neighbor-expanded margin selection, making extra margin rows available to crossmatch and eligible join inputs; no runtime proves a false default crossmatch or changed real join, maintainers must select the completeness, margin, metadata, compatibility, and performance contract, LSDB requires human-owned contact, and BuildKit 6966 occupies the implementation slot
+    last_checked: 2026-07-19
+    next_check: monitor issue 1328 and relevant LSDB and HATS heads; after slot release and authorized human contact, revalidate ownership and overlap, ask maintainers to select the completeness and margin contract, and only then run the repository-local boundary matrix
+    dossier: .contrib/dossiers/lsdb-1328.md
+    cross_review: GO
+    observer_verdict: evidence-go-dispatch-wait
+  - project: astronomy-commons/lsdb
     issue: 1307
     reason: pinned LSDB and HATS sources show that three partition-preserving UDF surfaces do not compare output RA and Dec while retaining HATS spatial structure, but row correspondence, equality, laziness, scope, and survey-scale performance remain unresolved; Project V2 and adjacent work require human coordination, and BuildKit 6966 occupies the implementation slot
     last_checked: 2026-07-19
@@ -207,6 +215,14 @@ waiting:
     next_check: offer reproducer and request complete mount evidence before implementation
 
 completed:
+  - project: astronomy-commons/lsdb
+    issue: 1328
+    artifact: pinned LSDB and HATS coarse/fine and margin-expansion source audit, downstream crossmatch and join input mapping, historical contract matrix, ownership and policy assessment, and unexecuted boundary-fixture protocol
+    dossier: .contrib/dossiers/lsdb-1328.md
+    cross_review: GO
+    observer_verdict: evidence-go-dispatch-wait
+    completed: 2026-07-19
+    externally_posted: false
   - project: astronomy-commons/lsdb
     issue: 1307
     artifact: pinned LSDB and HATS spatial-invariant and three-UDF source audit, ownership, history, and policy assessment, and unexecuted tiny-fixture protocol

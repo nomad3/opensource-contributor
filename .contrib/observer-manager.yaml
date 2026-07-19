@@ -158,6 +158,20 @@ observed:
         - LSDB policy requires human-owned upstream interaction
         - BuildKit 6966 occupies the sole implementation slot
       next_check: monitor issue 1307 and PR 1488; after slot release and authorized human contact, inspect Project V2, revalidate public ownership and direct implementation searches, and ask maintainers to select the row-correspondence and performance contract before runtime work
+    - project: astronomy-commons/lsdb
+      issue: 1328
+      result: waiting
+      evidence: pinned LSDB and HATS sources show that fine=false skips point filtering after HATS neighbor-expands margin partition selection; retained rows reach crossmatch and eligible join inputs, with nested joins consuming the margin only when an aligned right pixel exists
+      artifact: .contrib/dossiers/lsdb-1328.md
+      cross_review: GO
+      observer_verdict: evidence-go-dispatch-wait
+      blockers:
+        - source inspection does not prove a false default crossmatch, a changed real join, an affected science result, or measured performance
+        - maintainers must select the exact-region versus all-coarse-main-row completeness domain, margin behavior and footprint, metadata signal, and compatibility and performance contract
+        - no tiny-fixture runtime has executed and no fix has been selected
+        - LSDB policy requires human-owned upstream interaction
+        - BuildKit 6966 occupies the sole implementation slot
+      next_check: monitor issue 1328 and relevant LSDB and HATS heads; after slot release and authorized human contact, revalidate ownership and direct implementation searches, ask maintainers to select the completeness and margin contract, and only then run the repository-local boundary matrix
     - project: sunpy/sunpy
       issue: 8599
       result: waiting
@@ -191,9 +205,9 @@ capacity:
   routing: observation-only
 
 storage:
-  checked: 2026-07-19T07:54:17Z
+  checked: 2026-07-19T08:23:42Z
   volume_used_percent: 94
-  available_gib: 27.1
+  available_gib: 27.2
   risk: high
 
 cleanup:
