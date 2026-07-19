@@ -44,6 +44,11 @@ ready:
 
 waiting:
   - project: open-telemetry/opentelemetry-python-contrib
+    issue: 4817
+    reason: root cause and minimal fix are mapped, but repository policy requires human maintainer agreement and BuildKit 6966 occupies the implementation slot
+    last_checked: 2026-07-19
+    next_check: human obtains maintainer agreement on single weak-reference resolution; implement only after BuildKit 6966 clears the slot
+  - project: open-telemetry/opentelemetry-python-contrib
     issue: 4816
     reason: bootstrap generation has no external GenAI metadata source and the new OpenAI mapping conflicts with existing openai-v2 detection
     last_checked: 2026-07-19
@@ -110,6 +115,12 @@ waiting:
     next_check: offer reproducer and request complete mount evidence before implementation
 
 completed:
+  - project: open-telemetry/opentelemetry-python-contrib
+    issue: 4817
+    artifact: PyPy weak-reference teardown race root-cause and deterministic regression-test dossier
+    dossier: .contrib/dossiers/opentelemetry-python-contrib-4817.md
+    completed: 2026-07-19
+    externally_posted: false
   - project: open-telemetry/opentelemetry-python-contrib
     issue: 4816
     artifact: cross-repository bootstrap scope and compatibility dossier

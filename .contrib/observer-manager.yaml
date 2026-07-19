@@ -36,6 +36,12 @@ observed:
       result: waiting
       evidence: new OpenAI detection conflicts with openai-v2 and generator has no external GenAI metadata source
       artifact: .contrib/dossiers/opentelemetry-python-contrib-4816.md
+    - project: open-telemetry/opentelemetry-python-contrib
+      issue: 4817
+      result: waiting
+      evidence: weak reference is resolved twice across a collection boundary, matching the reported target=None teardown failure
+      artifact: .contrib/dossiers/opentelemetry-python-contrib-4817.md
+      next_check: human obtains maintainer agreement and BuildKit 6966 no longer occupies the implementation slot
 
 next_dispatch:
   role: observer
