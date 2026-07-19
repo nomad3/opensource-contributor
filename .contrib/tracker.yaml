@@ -9,6 +9,9 @@ profile:
     - CI/CD and supply-chain security
     - MLOps and Python
     - FinOps and cloud governance
+    - astronomy and astrophysics scientific integrity
+    - reproducible scientific-data pipelines
+    - agentic research infrastructure
   rule: one active implementation at a time
 
 active:
@@ -41,6 +44,68 @@ ready:
       artifact: upgrade or reconciliation failure-path analysis
 
 waiting:
+  - project: gwpy/gwpy
+    issue: 1850
+    reason: pinned source proves the supplied-ASD broadcast and adjacent silent-shortening regimes, but the issue omits its exact grid and maintainers have not chosen reject, shorten, or align semantics; BuildKit 6966 occupies the implementation slot
+    last_checked: 2026-07-19
+    next_check: monitor for reporter metadata, maintainer direction, ownership, or overlapping work; after slot release and authorized contact, revalidate and ask for the missing inputs before writing the focused regression
+    dossier: .contrib/dossiers/gwpy-1850.md
+    cross_review: GO
+    observer_verdict: evidence-go-dispatch-wait
+  - project: lightkurve/lightkurve
+    issue: 1531
+    reason: source and merged history establish a no-radius exact-identity defect and an offline regression boundary, but the engaged reporter's intent must be rechecked and BuildKit 6966 occupies the implementation slot
+    last_checked: 2026-07-19
+    next_check: after slot release, revalidate reporter intent, comments, assignment, linked development, matching PRs and branches, and current main before writing the deterministic identity test
+    dossier: .contrib/dossiers/lightkurve-1531.md
+    handoff: .contrib/handoffs/lightkurve-1531.md
+  - project: dask/dask
+    issue: 12507
+    reason: the exact-release seed matrix and ownership-filtered control establish the culling defect, but the issue still needs triage and BuildKit 6966 occupies the implementation slot
+    last_checked: 2026-07-19
+    next_check: observe issue 12507 and PR 12470; after slot release, revalidate their heads and first add same-cardinality foreign-key regressions
+    dossier: .contrib/dossiers/dask-12507.md
+    handoff: .contrib/handoffs/dask-12507.md
+    reproducer: reproducers/dask-12507
+    cross_review: GO
+    observer_verdict: evidence-go-dispatch-wait
+  - project: lightkurve/lightkurve
+    issue: 1565
+    reason: current main maps each SearchResult row to one TPF, choosing the first fresh TESSCut response or the first cached match under the first get_sectors detector prefix; contributor Sammy-Dabbas explicitly offered to implement, no matching PR exists, and BuildKit 6966 occupies the implementation slot
+    last_checked: 2026-07-19
+    next_check: observe for maintainer response or a pull request and recheck by 2026-07-29; do not duplicate while contributor intent remains active
+    dossier: .contrib/dossiers/astronomy-candidates-2026-07-19.md
+    observer_verdict: evidence-go-dispatch-wait
+  - project: gammapy/gammapy
+    issue: 6716
+    reason: the pinned markerless-YAML dispatch matrix isolates a bounded 2.0.x reader defect, but mandatory issue discussion and the exact maintenance contract remain outstanding and BuildKit 6966 occupies the implementation slot
+    last_checked: 2026-07-19
+    next_check: observe issue 6716; after slot release and authorized human contact, obtain maintainer direction on the reader-only target, then revalidate ownership, matching work, and both maintenance heads
+    dossier: .contrib/dossiers/gammapy-6716.md
+    handoff: .contrib/handoffs/gammapy-6716.md
+    cross_review: GO
+    observer_verdict: evidence-go-dispatch-wait
+  - project: sunpy/sunpy
+    issue: 8599
+    reason: current and historical behavior intentionally fails fast by default and allow_errors=true already loads the valid science HDU; only a maintainer-approved file-only auxiliary-HDU exception could justify code
+    last_checked: 2026-07-19
+    next_check: observe for maintainer direction; otherwise classify no-go or test-docs-only, and revalidate member-reporter intent, ownership, matching work, and current main before any narrow exception
+    dossier: .contrib/dossiers/astronomy-candidates-2026-07-19.md
+    observer_verdict: evidence-go-dispatch-wait
+  - project: yt-project/yt
+    issue: 5439
+    reason: assigned member-reporter chummels owns active PR 5440, whose narrow guard is plausible but still has an unresolved review request and no deterministic regression executed by ordinary CI
+    last_checked: 2026-07-19
+    next_check: observe PR 5440 for author update, a normally collected cosmological empty-chunk test, resolved review thread, refreshed branch, and maintainer approval; do not duplicate
+    review: .contrib/reviews/yt-5440.md
+  - project: bilby-dev/bilby
+    issue: 1114
+    reason: the arithmetic failure is reproduced and historical design confirms mixed output is expected, but maintainers have not defined complete, partial, or inconsistent mixed-input semantics and BuildKit 6966 occupies the implementation slot
+    last_checked: 2026-07-19
+    next_check: revalidate comments, assignment, linked development, and matching PRs; promote only after maintainer guidance and slot release
+    dossier: .contrib/dossiers/bilby-1114.md
+    handoff: .contrib/handoffs/bilby-1114.md
+    reproducer: reproducers/bilby-1114
   - project: opencost/opencost
     issue: 3769
     reason: focused test proves spot price selection succeeds while Node.IsSpot remains false, but BuildKit 6966 occupies the implementation slot
@@ -118,6 +183,58 @@ waiting:
     next_check: offer reproducer and request complete mount evidence before implementation
 
 completed:
+  - project: gwpy/gwpy
+    issue: 1850
+    artifact: pinned three-version source audit, exact impulse-to-tap length algebra, silent-shortening boundary, and deterministic future contract-test design
+    dossier: .contrib/dossiers/gwpy-1850.md
+    cross_review: GO
+    observer_verdict: evidence-go-dispatch-wait
+    completed: 2026-07-19
+    externally_posted: false
+  - project: gammapy/gammapy
+    issue: 6716
+    artifact: pinned release and maintenance source matrix, markerless dispatch regression design, and separate 2.1-producer acceptance control
+    dossier: .contrib/dossiers/gammapy-6716.md
+    handoff: .contrib/handoffs/gammapy-6716.md
+    cross_review: GO
+    observer_verdict: evidence-go-dispatch-wait
+    completed: 2026-07-19
+    externally_posted: false
+  - project: dask/dask
+    issue: 12507
+    artifact: exact-release multi-seed reproducer, culling root-cause mapping, same-cardinality controls, and ownership-filtered fixed-path computation
+    dossier: .contrib/dossiers/dask-12507.md
+    handoff: .contrib/handoffs/dask-12507.md
+    reproducer: reproducers/dask-12507
+    cross_review: GO
+    observer_verdict: evidence-go-dispatch-wait
+    completed: 2026-07-19
+    externally_posted: false
+  - project: yt-project/yt
+    pull_request: 5440
+    artifact: adversarial review of the GIZMO empty-particle guard, ownership overlap, and unexecuted FIRE-only regression
+    review: .contrib/reviews/yt-5440.md
+    cross_review: GO
+    completed: 2026-07-19
+    externally_posted: false
+  - project: lightkurve/lightkurve
+    issue: 1531
+    artifact: current-source and historical-contract mapping with an offline exact-identity regression design
+    dossier: .contrib/dossiers/lightkurve-1531.md
+    handoff: .contrib/handoffs/lightkurve-1531.md
+    cross_review: GO
+    observer_verdict: evidence-go-dispatch-wait
+    completed: 2026-07-19
+    externally_posted: false
+  - project: bilby-dev/bilby
+    issue: 1114
+    artifact: source and historical design mapping with a zero-dependency arithmetic reproducer and regression-oracle tests
+    dossier: .contrib/dossiers/bilby-1114.md
+    reproducer: reproducers/bilby-1114
+    handoff: .contrib/handoffs/bilby-1114.md
+    cross_review: GO
+    completed: 2026-07-19
+    externally_posted: false
   - project: opencost/opencost
     issue: 3769
     artifact: failing regression test, root-cause dossier, and resumable handoff

@@ -50,6 +50,95 @@ observed:
       dispatch_conflict: BuildKit 6966 remains the authoritative active implementation
       process_breach: failing-test creation began a second implementation before the slot gate was enforced
       next_check: resume only after the implementation slot clears or the user explicitly overrides the one-slot policy
+    - project: bilby-dev/bilby
+      issue: 1114
+      result: waiting
+      evidence: zero-dependency oracle reproduces lambda_1=0.0 round-tripping to -2.45587692656649e-14; historical design makes mixed tidal output expected
+      artifact: .contrib/dossiers/bilby-1114.md
+      handoff: .contrib/handoffs/bilby-1114.md
+      reproducer: reproducers/bilby-1114
+      cross_review: GO
+      next_check: revalidate comments, assignee, linked development, and matching PRs; promote only after maintainers define mixed-input semantics and the implementation slot is free
+    - project: gwpy/gwpy
+      issue: 1850
+      result: waiting
+      evidence: v3.0.12 matches the reported traceback, while v4.0.1 and current main retain a supplied-ASD path that broadcasts when I is below K/2 and silently returns fewer than K taps when I is at least K/2 but below K
+      artifact: .contrib/dossiers/gwpy-1850.md
+      cross_review: GO
+      observer_verdict: evidence-go-dispatch-wait
+      blockers:
+        - the issue omits its exact time-series and ASD-grid parameters
+        - maintainers must choose deliberate rejection, explicit shortening, or scientifically defined ASD alignment
+        - BuildKit 6966 occupies the sole implementation slot
+      next_check: monitor issue 1850; after slot release and authorized contact, revalidate ownership and ask for the missing inputs and desired compatibility semantics before writing the focused regression
+    - project: lightkurve/lightkurve
+      issue: 1531
+      result: waiting
+      evidence: current source lets an optional author filter empty the exact target query and trigger cone fallback; issue-reported output then returns nearby TIC 203892745
+      contract: no-radius mission identifiers preserve exact target_name identity; explicit radius intentionally performs cone search
+      artifact: .contrib/dossiers/lightkurve-1531.md
+      handoff: .contrib/handoffs/lightkurve-1531.md
+      cross_review: GO
+      observer_verdict: evidence-go-dispatch-wait
+      coordination_risk: engaged reporter supplied the root-cause triage and recently merged related PR 1541
+      next_check: after slot release, revalidate reporter intent, comments, assignment, linked development, matching PRs and branches, and current main before writing a deterministic test
+    - project: dask/dask
+      issue: 12507
+      result: waiting
+      evidence: exact Dask 2026.7.1 seed matrix produces 334 to 728 tasks; restoring per-layer key ownership filtering yields 82 tasks for every seed and the correct selected array
+      artifact: .contrib/dossiers/dask-12507.md
+      handoff: .contrib/handoffs/dask-12507.md
+      reproducer: reproducers/dask-12507
+      cross_review: GO
+      observer_verdict: evidence-go-dispatch-wait
+      blockers:
+        - issue still awaits maintainer triage
+        - BuildKit 6966 occupies the sole implementation slot
+        - current main and adjacent PR 12470 heads require runtime replay before implementation
+      next_check: observe issue 12507 and PR 12470 for triage, ownership, or optimizer-path changes; after slot release, revalidate and first add same-cardinality foreign-key regressions
+    - project: lightkurve/lightkurve
+      issue: 1565
+      result: waiting
+      evidence: current main derives the cached detector prefix from the first Tesscut.get_sectors row and opens cached_files[0], while a fresh request downloads every matching cutout but opens only cutout_path[0][0]; this selects the target-center detector in the reported single-row case, but no explicit multi-detector tie-break or return-all mapping exists
+      artifact: .contrib/dossiers/astronomy-candidates-2026-07-19.md
+      observer_verdict: evidence-go-dispatch-wait
+      coordination_risk: contributor Sammy-Dabbas explicitly offered to implement and core maintainers were pinged
+      next_check: observe for maintainer response or a pull request and recheck by 2026-07-29; do not duplicate while contributor intent remains active
+    - project: gammapy/gammapy
+      issue: 6716
+      result: waiting
+      evidence: pinned release and maintenance sources show that markerless YAML sends a 2.1 GADF payload through the 2.0.x OGIP default even though 2.0.x already supports explicit GADF reads
+      artifact: .contrib/dossiers/gammapy-6716.md
+      handoff: .contrib/handoffs/gammapy-6716.md
+      contract: prefer bounded 2.0.x reader detection; do not backport the 2.1 writer-default change without maintainer direction
+      cross_review: GO
+      observer_verdict: evidence-go-dispatch-wait
+      blockers:
+        - Gammapy policy requires a human issue discussion before coding
+        - maintainers must define the direct-maintenance or backport target
+        - BuildKit 6966 occupies the sole implementation slot
+      next_check: observe issue 6716; after slot release and user-authorized contact, obtain the exact 2.0.2 reader-backport contract and revalidate ownership, matching work, and current maintenance heads
+    - project: sunpy/sunpy
+      issue: 8599
+      result: waiting
+      evidence: current main and stable release history intentionally fail fast on an invalid two-dimensional HDU by default, while allow_errors=true loads the valid CCOR science HDU
+      artifact: .contrib/dossiers/astronomy-candidates-2026-07-19.md
+      contract: default global skipping is established as opt-in; only a maintainer-approved narrow exception for file-derived auxiliary HDUs could justify implementation
+      observer_verdict: evidence-go-dispatch-wait
+      coordination_risk: the reporter is an active project member and release manager, and the diagnosed issue has been idle without follow-up
+      next_check: observe for maintainer direction; classify no-go or test-docs-only if allow_errors remains the intended contract, and revalidate ownership before any approved file-only exception
+    - project: yt-project/yt
+      issue: 5439
+      result: overlap
+      evidence: issue is assigned to member-reporter chummels, who owns active PR 5440 implementing the exact GIZMO empty-creation-time guard
+      review: .contrib/reviews/yt-5440.md
+      cross_review: GO
+      review_verdict: do-not-duplicate-do-not-promote-yet
+      blockers:
+        - unresolved reviewer request to retain the one-argument field signature
+        - FIRE regression is ignored by ordinary pytest and skipped without external data in normal nose CI
+        - branch is 113 commits behind current main and the external full-suite status is pending
+      next_check: observe PR 5440 for author update, deterministic ordinary-CI regression, resolved review thread, refreshed branch, and maintainer approval; never dispatch a duplicate
 
 next_dispatch:
   role: observer
@@ -62,11 +151,14 @@ capacity:
   routing: observation-only
 
 storage:
-  checked: 2026-07-19T02:00:00Z
-  volume_used_percent: 96
-  available_gib: 20
+  checked: 2026-07-19T06:09:09Z
+  volume_used_percent: 97
+  available_gib: 12.7
   risk: high
 
 cleanup:
   prometheus_operator_pr_8645_worktree: removed
+  opencost_3769_checkout: removed
+  dask_12507_temporary_runtime: removed
+  dask_12507_python_bytecode: removed
   go_build_and_test_cache: cleaned

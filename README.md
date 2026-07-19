@@ -44,8 +44,8 @@ reset information remain the source of truth.
 - [Dossier template](.contrib/dossiers/TEMPLATE.md) defines reconnaissance evidence.
 - [Handoff template](.contrib/handoffs/TEMPLATE.md) preserves resumable state.
 - [Agent prompts](.contrib/prompts/) separate investigation, implementation, and review.
-- [Observer prompt](.contrib/prompts/observer.md) coordinates candidate research,
-  enforces ownership gates, and protects the one-active-implementation rule.
+- [Astronomy observer policy](.contrib/prompts/observer.md) adds scientific-integrity,
+  domain-resource, and trustworthy-ML checks to the general manager.
 - [Observer Manager skill](skills/observer-manager/SKILL.md) provides a reusable,
   installable supervisor for capacity, queues, CI/reviews, handoffs, and cleanup.
 - [Observer state](.contrib/observer-manager.yaml) records the current decision
