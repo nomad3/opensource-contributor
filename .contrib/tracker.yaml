@@ -12,10 +12,10 @@ profile:
   rule: one active implementation at a time
 
 active:
-  project: null
+  project: moby/buildkit
   issue: null
-  stage: selection
-  next_action: choose one non-overlapping ready item after BuildKit #4001 ownership recheck
+  stage: local-patch-ready
+  next_action: obtain human approval to fork/push and prepare a draft PR for OTEL_IGNORE_ERROR
   estimated_capacity: low
   blocked: false
   externally_posted: false
