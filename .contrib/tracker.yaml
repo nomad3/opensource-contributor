@@ -24,9 +24,6 @@ active:
 
 ready:
   low:
-    - project: scikit-learn/scikit-learn
-      issue: 28793
-      artifact: reproduction matrix across dtypes and writable/read-only arrays
     - project: kubernetes-sigs/kueue
       artifact: triage current help-wanted metrics or operational-documentation issues
     - project: open-telemetry/opentelemetry-python-contrib
@@ -37,9 +34,6 @@ ready:
     - project: kubeflow/pipelines
       artifact: select a bounded Python SDK or pipeline reliability test
   high:
-    - project: moby/moby
-      issue: 50732
-      artifact: gotestsum controlled CI experiment and evidence report
     - project: kubernetes-sigs/kueue
       artifact: controller architecture and scale-test mapping
     - project: prometheus-operator/prometheus-operator
@@ -56,5 +50,30 @@ waiting:
     reason: three open overlapping pull requests (5450, 5693, 5697)
     last_checked: 2026-07-19
     next_check: observe upstream resolution; do not implement
+  - project: scikit-learn/scikit-learn
+    issue: 28793
+    reason: reserved for sprint participants and overlapping stalled PR 30307
+    last_checked: 2026-07-19
+    next_check: wait for sprint reservation and existing contributor work to resolve
+  - project: open-telemetry/opentelemetry-python-contrib
+    issue: 476
+    reason: original contributor can reopen inactivity-closed draft PR 3928
+    last_checked: 2026-07-19
+    next_check: ask before taking over if the original contributor does not resume
+  - project: kubernetes-sigs/kueue
+    issue: 1473
+    reason: active overlapping PR 13069
+    last_checked: 2026-07-19
+    next_check: observe upstream resolution; do not implement
+  - project: kubernetes-sigs/kueue
+    issue: 9402
+    reason: API scope and configuration level remain unresolved
+    last_checked: 2026-07-19
+    next_check: wait for maintainer design guidance
+  - project: moby/moby
+    issue: 50732
+    reason: active overlapping PR 52714 implements the proposed bounded scope
+    last_checked: 2026-07-19
+    next_check: observe PR review and avoid duplicate CI changes
 
 completed: []
