@@ -14,11 +14,13 @@ profile:
 active:
   project: moby/buildkit
   issue: null
-  stage: local-patch-ready
-  next_action: obtain human approval to fork/push and prepare a draft PR for OTEL_IGNORE_ERROR
+  pull_request: 6966
+  url: https://github.com/moby/buildkit/pull/6966
+  stage: draft-pr
+  next_action: monitor CI and respond narrowly to maintainer review
   estimated_capacity: low
   blocked: false
-  externally_posted: false
+  externally_posted: true
 
 ready:
   low:

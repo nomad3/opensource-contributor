@@ -4,6 +4,7 @@
 
 - Repository: moby/buildkit
 - Upstream issue: none found
+- Draft pull request: [#6966](https://github.com/moby/buildkit/pull/6966)
 - Upstream commit inspected: `6dd06999d5d369a217c3f3259a420f507e2db2c7` (`master`)
 - Local patch commit: `14e0dfbd`
 - Checked at: 2026-07-18
@@ -86,7 +87,7 @@ All tests and vet passed; `gofmt -l` returned no files.
 
 ## Decision
 
-- Status: local patch ready
-- Next action: with human approval, create or update the personal BuildKit fork, push
-  `fix/otel-ignore-error`, and prepare a draft upstream pull request.
-- External communication: none
+- Status: draft pull request open
+- Next action: monitor CI and respond narrowly to maintainer review.
+- Publication: `nomad3/buildkit:fix/otel-ignore-error` at `14e0dfbd`
+- Initial checks: DCO passed; repository workflows pending.

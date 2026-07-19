@@ -14,6 +14,8 @@ smallest test-backed change.
 - Ran focused tests, package tests, vet, and formatting checks.
 - Completed independent Fable 5 and Codex review.
 - Created signed-off local commit `14e0dfbd`.
+- Created `nomad3/buildkit` and pushed `fix/otel-ignore-error`.
+- Opened draft pull request [moby/buildkit#6966](https://github.com/moby/buildkit/pull/6966).
 
 ## Evidence
 
@@ -30,8 +32,8 @@ smallest test-backed change.
 
 ## Next exact action
 
-After human approval, fork with `gh` if needed, push the branch, verify DCO/checks, and
-prepare a concise draft pull request describing the behavior restoration risk.
+Monitor pull request #6966 checks and maintainer feedback. Keep any follow-up limited to
+the two-file regression fix.
 
 ## Do not do
 
