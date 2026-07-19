@@ -44,6 +44,14 @@ ready:
       artifact: upgrade or reconciliation failure-path analysis
 
 waiting:
+  - project: astronomy-commons/lsdb
+    issue: 1307
+    reason: pinned LSDB and HATS sources show that three partition-preserving UDF surfaces do not compare output RA and Dec while retaining HATS spatial structure, but row correspondence, equality, laziness, scope, and survey-scale performance remain unresolved; Project V2 and adjacent work require human coordination, and BuildKit 6966 occupies the implementation slot
+    last_checked: 2026-07-19
+    next_check: monitor issue 1307 and PR 1488; after slot release and authorized human contact, inspect Project V2, revalidate public ownership and direct implementation searches, and ask maintainers to select the row-correspondence and performance contract before runtime work
+    dossier: .contrib/dossiers/lsdb-1307.md
+    cross_review: GO
+    observer_verdict: evidence-go-dispatch-wait
   - project: astropy/astropy
     issue: 18910
     reason: pinned main and v8.0.1 sources prove the one-table identity shortcut across vstack, hstack, and dstack, but maintainers have not selected object, copy-depth, operation, dstack rank/index, or release-line semantics and BuildKit 6966 occupies the implementation slot
@@ -199,6 +207,14 @@ waiting:
     next_check: offer reproducer and request complete mount evidence before implementation
 
 completed:
+  - project: astronomy-commons/lsdb
+    issue: 1307
+    artifact: pinned LSDB and HATS spatial-invariant and three-UDF source audit, ownership, history, and policy assessment, and unexecuted tiny-fixture protocol
+    dossier: .contrib/dossiers/lsdb-1307.md
+    cross_review: GO
+    observer_verdict: evidence-go-dispatch-wait
+    completed: 2026-07-19
+    externally_posted: false
   - project: gammapy/gammapy
     issue: 6775
     artifact: pinned Gammapy and Regions source/dependency matrix, exact point-region Jacobian and SVD call path, containment history, and unexecuted 0.11-versus-0.12 position matrix

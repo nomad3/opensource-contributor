@@ -15,14 +15,16 @@ Lightkurve #1565 at `2026-07-19T05:27:48Z`.
 GWPy #1850 received a source, history, policy, and ownership audit at
 `2026-07-19T05:59:41Z`; Astropy #18910 received the same bounded audit at
 `2026-07-19T06:40:44Z`; Gammapy #6775 received a cross-project dependency,
-source, history, policy, and ownership audit at `2026-07-19T07:04:14Z`.
+source, history, policy, and ownership audit at `2026-07-19T07:04:14Z`; LSDB
+#1307 received a bounded LSDB/HATS invariant, source, history, policy, and
+ownership audit at `2026-07-19T07:34:46Z`.
 
 This is a non-authoritative lead inventory, not an operational queue. Only the
 Observer Manager may promote or dispatch an item. Bilby #1114, Lightkurve
 #1531 and #1565, yt #5439, Dask #12507, Gammapy #6716, GWPy #1850, and SunPy
 #8599 have received deeper audits. Astropy #18910 and Gammapy #6775 now also
-have full source-only dossiers. The remaining entries are issue-level leads
-that still require a fresh evidence bundle with exact timestamps,
+have full source-only dossiers, as does LSDB #1307. The remaining entries are
+issue-level leads that still require a fresh evidence bundle with exact timestamps,
 assignment/overlap searches, resource requirements, and recheck conditions
 before promotion.
 
@@ -36,7 +38,7 @@ before promotion.
 | 4 | yt | Scalable simulation analysis | Excellent match for data correctness, Dask, memory, performance, and very large datasets. |
 | 5 | Gammapy | Dataset compatibility and CI | Two bounded dossiers now cover serialized-analysis compatibility and a released-stack energy-dispersion validation failure. |
 | 6 | Astropy ecosystem | Core data formats, archive access, and coordinates | Foundational impact and strong review standards; the singleton table-stack ownership defect now has a bounded contract dossier. |
-| 7 | Survey-scale infrastructure | LSDB, HATS, SkyPortal, Fink, and RAIL | Strategic data/ML infrastructure fit; issue selection requires deeper setup and coordination. |
+| 7 | Survey-scale infrastructure | LSDB, HATS, SkyPortal, Fink, and RAIL | Strategic data/ML infrastructure fit; LSDB #1307 is a source-confirmed spatial-invariant gap, but its comparison and performance contract needs maintainer direction. |
 
 ## Candidate issues
 
@@ -53,6 +55,7 @@ before promotion.
 | Gammapy | [#6787 — CI not running correctly on development dependencies](https://github.com/gammapy/gammapy/issues/6787) | Direct overlap found | Draft [PR #6731](https://github.com/gammapy/gammapy/pull/6731) covers the development-dependency CI lane; observe and do not duplicate. |
 | SunPy | [#8599 — GOES-19 CCOR science data does not load as a map](https://github.com/sunpy/sunpy/issues/8599) | Current/stable source and contract history mapped; synthetic multi-HDU regression designed | A second 2-D HDU is invalid for `Map`; `allow_errors=True` loads the valid science HDU and default fail-fast behavior is historically intentional. Treat code as no-go unless maintainers request a narrow file-derived auxiliary-HDU exception. |
 | Astropy | [#18910 — one-table stack returns the caller's table despite documenting a new table](https://github.com/astropy/astropy/issues/18910) | Pinned main/`v8.0.1` source, tests, history, policy, and overlap audited; independently reviewed; [full dossier](astropy-18910.md) | The identity alias and top-level metadata effect are verified. Evidence is GO; dispatch waits for table-maintainer decisions on copy depth, vstack-only versus all operations, singleton `dstack` rank/index behavior, release treatment, and the implementation slot. |
+| LSDB | [#1307 — coordinate-changing UDFs can invalidate HATS spatial structure](https://github.com/astronomy-commons/lsdb/issues/1307) | Pinned LSDB/HATS source, three UDF entry points, history, policy, and public ownership signals audited; independently reviewed; [full dossier](lsdb-1307.md) | The APIs retain structural state without comparing output coordinates, creating a source-supported spatial-integrity risk. Evidence is GO; runtime work, Project V2 and adjacent-work coordination, maintainer-selected row/performance semantics, human upstream contact, and the implementation slot remain WAIT. |
 | yt | [#2281 — faster particle depositions](https://github.com/yt-project/yt/issues/2281) | Issue-reported benchmark lead | Performance-sensitive and broad. Requires fresh ownership/overlap checks, representative datasets, and baseline evidence. |
 | SunPy | [#8416 — support arbitrary APE-14 WCS in `GenericMap.plot`](https://github.com/sunpy/sunpy/issues/8416) | Overlap found | Do not duplicate: active [PR #8684](https://github.com/sunpy/sunpy/pull/8684) implements the requested support. |
 | Astroquery | [#3626 — VizieR errors appear as empty results](https://github.com/astropy/astroquery/issues/3626) | Overlap found | Observe only: active [PR #3632](https://github.com/astropy/astroquery/pull/3632) overlaps the error-semantics work. |
@@ -160,6 +163,22 @@ Gammapy #6775:
 7. Observer acceptance is GO; dispatch waits for the implementation slot,
    human issue discussion, exact runtime boundary, and maintainer ownership.
 
+LSDB #1307:
+
+1. Current LSDB and HATS sources, the issue, related history, public ownership
+   signals, contribution policy, and three UDF surfaces were pinned and mapped.
+2. `map_partitions`, replacement-mode `map_rows`, and `merge_map` retain HATS
+   structure without comparing returned RA and Dec values.
+3. Stale spatial keys, partitions, pixel tree/MOC, and margins are
+   source-supported risks, not a runtime reproduction or an affected catalog.
+4. No direct public implementation was found, but unread Project V2 state and
+   adjacent issue #1457 / PR #1488 require human coordination.
+5. An existing-fixture boundary protocol covers unchanged, moved, filtered,
+   reordered, duplicated, margin, and lazy-execution cases; it was not run.
+6. Independent review is GO; implementation and contact wait for row
+   correspondence, equality, laziness, scope, performance, policy, and slot
+   decisions.
+
 Second-round astronomy-native audits:
 
 1. Lightkurve #1565 is source-established and scientifically meaningful, but an
@@ -174,6 +193,9 @@ Second-round astronomy-native audits:
 4. Astropy #18910 is a verified singleton identity mismatch, but code must wait
    for a table-maintainer decision on copying, operation scope, `dstack` rank,
    indices, and release treatment.
+5. LSDB #1307 is a source-confirmed survey-catalog spatial-invariant gap, but
+   runtime work must wait for human coordination and maintainer-selected row
+   correspondence and survey-scale performance semantics.
 
 The Observer may continue read-only monitoring. Upstream contact requires explicit
 user authorization. Bilby implementation additionally requires maintainer-defined
@@ -182,7 +204,8 @@ maintainer-selected compatibility semantics. Lightkurve implementation requires 
 free Observer slot and a fresh reporter-intent and overlap check. Dask and Gammapy
 require a free slot and fresh maintainer/overlap checks. Astropy requires its
 table ownership and rank contract before code. yt #5439 must remain observe-only
-while PR #5440 is active.
+while PR #5440 is active. LSDB requires human-owned coordination and a
+maintainer-selected spatial-validation contract before runtime or code.
 
 ## Non-authoritative research inventory
 
@@ -205,6 +228,10 @@ These categories summarize potential research depth only. They do not confer
 - Astropy #18910 — [source-confirmed singleton table alias](astropy-18910.md);
   evidence GO, dispatch WAIT on ownership, copy depth, operation, `dstack`
   rank/index, release-line semantics, and the implementation slot.
+- LSDB #1307 — [source-confirmed HATS spatial-invariant gap](lsdb-1307.md);
+  evidence GO, dispatch WAIT on human Project V2 and adjacent-work
+  coordination, row correspondence, comparison/laziness/scope/performance
+  semantics, and the implementation slot.
 
 ### Deep research
 
@@ -259,8 +286,9 @@ These categories summarize potential research depth only. They do not confer
 ## Decision
 
 - Completed reconnaissance: Bilby #1114, Lightkurve #1531, Dask #12507,
-  Gammapy #6716 and #6775, source-only GWPy #1850, and source-only Astropy
-  #18910; fresh bounded audits also cover Lightkurve #1565 and SunPy #8599
+  Gammapy #6716 and #6775, source-only GWPy #1850, source-only Astropy #18910,
+  and source-only LSDB #1307; fresh bounded audits also cover Lightkurve #1565
+  and SunPy #8599
 - Best data-integrity implementation after slot and ownership recheck:
   Lightkurve #1531
 - Best astronomy-native maintenance candidate after slot and contract recheck:
@@ -272,6 +300,9 @@ These categories summarize potential research depth only. They do not confer
   implementation waits for exact inputs and maintainers' scientific contract
 - Best bounded core astronomy table/API contract: Astropy #18910;
   implementation waits for table-maintainer decisions and the free slot
+- Best bounded survey-scale spatial-integrity investigation: LSDB #1307;
+  evidence is GO, while runtime and implementation wait for human coordination,
+  maintainer-selected row/performance semantics, and the free slot
 - Bounded simulation implementation candidate: reselection required; yt #5439
   is already owned by active PR #5440
 - Best evidence-backed cross-science performance lane: Dask #12507
